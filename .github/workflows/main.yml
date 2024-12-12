@@ -15,4 +15,4 @@ jobs:
           upstream_repo: https://github.com/jitenderchand/tradeling-portal
           upstream_branch: main
           downstream_branch: main
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
