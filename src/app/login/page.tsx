@@ -1,6 +1,5 @@
-import { GetServerSidePropsResult } from "next";
 import Login from "@/modules/login";
 
-export default function LoginPage({ user }: any) {
+export default function LoginPage() {
   return <Login />;
 }

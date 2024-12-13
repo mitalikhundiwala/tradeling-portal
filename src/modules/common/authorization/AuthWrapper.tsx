@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AuthStatus } from "@/modules/common/authorization/models/auth.model";
 import { IUser } from "@/modules/common/models/user";
 import { AuthRepository } from "@/services/auth.repository";
@@ -19,7 +18,7 @@ const AppContext = createContext<IAuthContext>({
   permissions: [],
 });
 
-export function AuthWrapper({ children }: { children: any }) {
+export function AuthWrapper({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   const status = AuthStatus.UNAUTHENTICATED;
@@ -41,7 +40,8 @@ export function AuthWrapper({ children }: { children: any }) {
 
   return (
     <AppContext.Provider value={authContext}>
-      {status !== AuthStatus.UNKNOWN ? (
+      {children}
+      {/* {status !== AuthStatus.UNKNOWN ? (
         children
       ) : (
         <div className="flex flex-col items-center">
@@ -52,7 +52,7 @@ export function AuthWrapper({ children }: { children: any }) {
             <div>Authenticating</div>
           </div>
         </div>
-      )}
+      )} */}
     </AppContext.Provider>
   );
 }
