@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AuthStatus } from "@/modules/common/authorization/models/auth.model";
 import { IUser } from "@/modules/common/models/user";
+import { AuthRepository } from "@/services/auth.repository";
 
 export interface IAuthContext {
   status: AuthStatus;
@@ -32,7 +33,10 @@ export function AuthWrapper({ children }: { children: any }) {
   };
 
   useEffect(() => {
-    router.push("/login");
+    const hasToken = AuthRepository.hasToken();
+    if (!hasToken) {
+      router.push("/login");
+    }
   }, []);
 
   return (

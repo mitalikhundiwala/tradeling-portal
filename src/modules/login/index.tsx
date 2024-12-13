@@ -1,27 +1,34 @@
 "use client";
 
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+// Define schema using Zod
+const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+type LoginFormInputs = z.infer<typeof loginSchema>;
+
 export default function LoginForm() {
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Username is required"),
-      password: Yup.string().required("Password is required"),
-    }),
-    onSubmit: (values) => {
-      console.log("Form Values:", values);
-      // Handle form submission logic here
-    },
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({
+    resolver: zodResolver(loginSchema),
   });
+
+  const onSubmit = (data: LoginFormInputs) => {
+    console.log("Form Values:", data);
+    // Handle form submission logic here
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -30,27 +37,19 @@ export default function LoginForm() {
           <CardTitle className="text-center">Login</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={formik.handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Username Field */}
             <div>
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
-                name="username"
-                type="text"
-                value={formik.values.username}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                {...register("username")}
                 placeholder="Enter your username"
-                className={
-                  formik.touched.username && formik.errors.username
-                    ? "border-red-500"
-                    : ""
-                }
+                className={errors.username ? "border-red-500" : ""}
               />
-              {formik.touched.username && formik.errors.username && (
+              {errors.username && (
                 <p className="text-red-500 text-sm mt-1">
-                  {formik.errors.username}
+                  {errors.username.message}
                 </p>
               )}
             </div>
@@ -60,21 +59,14 @@ export default function LoginForm() {
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
-                name="password"
                 type="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                {...register("password")}
                 placeholder="Enter your password"
-                className={
-                  formik.touched.password && formik.errors.password
-                    ? "border-red-500"
-                    : ""
-                }
+                className={errors.password ? "border-red-500" : ""}
               />
-              {formik.touched.password && formik.errors.password && (
+              {errors.password && (
                 <p className="text-red-500 text-sm mt-1">
-                  {formik.errors.password}
+                  {errors.password.message}
                 </p>
               )}
             </div>
