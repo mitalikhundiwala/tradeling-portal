@@ -26,6 +26,7 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
+  debug: true,
   session: {
     strategy: "jwt",
   },
@@ -59,6 +60,8 @@ export const {
         if (!user) {
           return null;
         }
+
+        console.log("chand");
 
         return {
           id: user.uid,
