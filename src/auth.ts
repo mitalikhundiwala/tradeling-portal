@@ -61,8 +61,6 @@ export const {
           return null;
         }
 
-        console.log("chand");
-
         return {
           id: user.uid,
           uid: user.uid,

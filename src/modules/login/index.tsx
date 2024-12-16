@@ -28,10 +28,9 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: LoginFormInputs) => {
-    console.log("Form Values:", data);
     await doCredentialLogin({
-      // redirect: true,
-      // callbackUrl: "/",
+      redirect: true,
+      redirectTo: "/",
       username: data.username,
       password: data.password,
     });
