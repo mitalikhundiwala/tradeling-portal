@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { signIn } from "@/auth";
 
 // Define schema using Zod
 const loginSchema = z.object({
@@ -25,9 +26,14 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormInputs) => {
+  const onSubmit = async (data: LoginFormInputs) => {
     console.log("Form Values:", data);
-    // Handle form submission logic here
+    await signIn("credentials", {
+      redirect: true,
+      callbackUrl: "/",
+      username: data.username,
+      password: data.password,
+    });
   };
 
   return (
