@@ -13,7 +13,6 @@ const AuthLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
       <body>
-        <aside>Sidebar</aside>
         <main>{children}</main>
       </body>
     </html>
