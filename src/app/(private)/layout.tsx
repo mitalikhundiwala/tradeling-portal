@@ -30,7 +30,7 @@ const AuthLayout: React.FC<RootLayoutProps> = ({ children }) => {
             <SidebarTrigger className="-ml-1" />
             <DropdownMenuComponent />
           </header>
-          <main>{children}</main>
+          <main className="flex-1 p-6">{children}</main>
         </SidebarInset>
       </SidebarProvider>
     </SessionProvider>
