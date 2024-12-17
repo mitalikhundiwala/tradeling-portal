@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { PUBLIC_ROUTES, LOGIN, ROOT } from "@/lib/routes";
+import { PUBLIC_ROUTES, LOGIN, ORDERS } from "@/lib/routes";
 import { auth } from "@/auth";
 
 export async function middleware(request: NextRequest) {
@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isAuthenticated && isPublicRoute) {
-    return NextResponse.redirect(new URL(ROOT, nextUrl));
+    return NextResponse.redirect(new URL(ORDERS, nextUrl));
   }
 }
 

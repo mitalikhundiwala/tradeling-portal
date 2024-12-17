@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { signIn } from "@/auth";
 import { doCredentialLogin } from "@/app/actions";
+import { ORDERS } from "@/lib/routes";
 
 // Define schema using Zod
 const loginSchema = z.object({
@@ -30,7 +31,7 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginFormInputs) => {
     await doCredentialLogin({
       redirect: true,
-      redirectTo: "/",
+      redirectTo: ORDERS,
       username: data.username,
       password: data.password,
     });

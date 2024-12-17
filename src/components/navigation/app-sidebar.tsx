@@ -43,7 +43,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader className="flex-col h-16 shrink-0 items-center gap-2 border-b px-4">
-        <span className="grow inline-block align-middle">Tradeling</span>
+        <span className="grow inline-block align-middle">
+          Tradeling
+        </span>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
