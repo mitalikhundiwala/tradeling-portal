@@ -6,13 +6,13 @@ async function authenticateUser(
   email: string,
   password: string
 ): Promise<IUser | null> {
-  if (email === "test@example.com" && password === "password123") {
+  if (email === "test@example.com" && password === "Password@123") {
     return {
       id: "1",
       uid: "1",
       email: "test@example.com",
-      firstName: "test",
-      lastName: "test",
+      firstName: "John",
+      lastName: "Doe",
       roles: [{ id: 1, name: "a" }],
       permissions: ["user.permissions"],
       emailVerified: null,
@@ -68,6 +68,7 @@ export const {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
+          name: `${user.firstName} ${user.lastName}`,
           roles: user.roles,
           permissions: user.permissions,
           emailVerified: null,
