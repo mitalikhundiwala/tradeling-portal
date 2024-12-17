@@ -68,6 +68,7 @@ export const {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
+          name: `${user.firstName} ${user.lastName}`,
           roles: user.roles,
           permissions: user.permissions,
           emailVerified: null,

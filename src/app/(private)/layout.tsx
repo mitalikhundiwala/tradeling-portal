@@ -8,18 +8,8 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { CircleUserRound } from "lucide-react";
-
-import LogoutComponent from "@/components/navigation/logout";
+import { SessionProvider } from "next-auth/react";
+import DropdownMenuComponent from "@/components/navigation/drop-down-menu";
 
 export const metadata = {
   title: "My App",
@@ -32,38 +22,18 @@ interface RootLayoutProps {
 
 const AuthLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
-    <html lang="en">
-      <body>
-        <SidebarProvider>
-          <AppSidebar />
-          <SidebarInset>
-            <header className="flex justify-between h-16 shrink-0 items-center gap-2 border-b px-4">
-              <SidebarTrigger className="-ml-1" />
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <div className="flex items-center">
-                    Mitali Patel
-                    <div className="pl-2">
-                      <CircleUserRound />
-                    </div>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>
-                    mitali.patel@axiomtelecom.com
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="justify-center">
-                    <LogoutComponent />
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </header>
-            <main>{children}</main>
-          </SidebarInset>
-        </SidebarProvider>
-      </body>
-    </html>
+    <SessionProvider>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex justify-between h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+            <DropdownMenuComponent />
+          </header>
+          <main>{children}</main>
+        </SidebarInset>
+      </SidebarProvider>
+    </SessionProvider>
   );
 };
 

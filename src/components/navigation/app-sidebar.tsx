@@ -3,6 +3,7 @@ import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -12,6 +13,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { TrendingUp, Users } from "lucide-react";
+import { NavUser } from "./nav-user";
 
 // This is sample data.
 const data = {
@@ -23,6 +26,7 @@ const data = {
           title: "Orders",
           url: "/orders",
           isActive: false,
+          icon: TrendingUp,
         },
       ],
     },
@@ -33,6 +37,7 @@ const data = {
           title: "Users",
           url: "/users",
           isActive: false,
+          icon: Users,
         },
       ],
     },
@@ -43,9 +48,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader className="flex-col h-16 shrink-0 items-center gap-2 border-b px-4">
-        <span className="grow inline-block align-middle">
-          Tradeling
-        </span>
+        <span className="grow inline-block align-middle">Tradeling</span>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
@@ -57,7 +60,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url}>{item.title}</a>
+                      <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -66,6 +72,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
