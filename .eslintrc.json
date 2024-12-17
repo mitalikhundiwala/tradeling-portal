@@ -1,3 +1,8 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "ignorePatterns": [
+    "src/app/favicon.ico",
+    "src/app/fonts/*.woff",
+    "src/app/**/*.css"
+  ]
 }
