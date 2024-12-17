@@ -1,9 +1,9 @@
 "use server";
 
 import { signIn } from "@/auth";
-import { revalidatePath } from "next/cache";
+import { SignInOptions } from "next-auth/react";
 
-export async function doCredentialLogin(data: any) {
+export async function doCredentialLogin(data: SignInOptions) {
   try {
     const response = await signIn("credentials", { ...data });
 
