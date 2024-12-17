@@ -6,7 +6,7 @@ async function authenticateUser(
   email: string,
   password: string
 ): Promise<IUser | null> {
-  if (email === "test@example.com" && password === "password123") {
+  if (email === "test@example.com" && password === "Password@123") {
     return {
       id: "1",
       uid: "1",
