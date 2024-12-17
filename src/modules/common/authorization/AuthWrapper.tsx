@@ -1,10 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { AuthStatus } from "@/modules/common/authorization/models/auth.model";
 import { IUser } from "@/modules/common/models/user";
-import { AuthRepository } from "@/services/auth.repository";
 
 export interface IAuthContext {
   status: AuthStatus;
@@ -19,8 +17,6 @@ const AppContext = createContext<IAuthContext>({
 });
 
 export function AuthWrapper({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-
   const status = AuthStatus.UNAUTHENTICATED;
   const user = null;
   const permissions: string[] = [];
@@ -32,10 +28,10 @@ export function AuthWrapper({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    const hasToken = AuthRepository.hasToken();
-    if (!hasToken) {
-      router.push("/login");
-    }
+    // const hasToken = AuthRepository.hasToken();
+    // if (!hasToken) {
+    //   router.push("/login");
+    // }
   }, []);
 
   return (
