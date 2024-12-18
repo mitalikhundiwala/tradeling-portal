@@ -54,7 +54,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="flex-col h-16 shrink-0 items-center gap-2 border-b px-4">
         <Link href="/">
           <span className="grow inline-block align-middle">
-            <Image src="/image.svg" alt="Icon" width="200" height="200" />
+            <Image
+              src="/image.svg"
+              alt="Icon"
+              width="200"
+              height="200"
+              priority={true}
+            />
           </span>
         </Link>
       </SidebarHeader>
