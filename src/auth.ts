@@ -4,7 +4,7 @@ import { IUser } from "@/modules/common/models/user";
 
 async function authenticateUser(
   email: string,
-  password: string
+  password: string,
 ): Promise<IUser | null> {
   if (email === "test@example.com" && password === "Password@123") {
     return {
@@ -42,7 +42,7 @@ export const {
 
         const user = await authenticateUser(
           credentials.username as string,
-          credentials.password as string
+          credentials.password as string,
         );
 
         // const response = await fetch("https://qa.hykeapi.com//auth/v2/login", {
