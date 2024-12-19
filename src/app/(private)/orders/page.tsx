@@ -7,7 +7,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { DataTable } from "@/components/table/data-table";
+import { DataTable } from "@/modules/common/components/table/data-table";
 import { columns } from "@/modules/orders/columns";
 
 export const metadata: Metadata = {

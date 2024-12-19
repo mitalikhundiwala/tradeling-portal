@@ -31,7 +31,6 @@ const generateFakeOrders = (num: number) => {
 };
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log("Hello");
   if (req.method === "GET") {
     // Handle GET request to fetch fake users
     const orders = generateFakeOrders(10); // Generate 10 fake users

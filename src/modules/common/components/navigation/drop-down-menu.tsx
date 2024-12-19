@@ -11,7 +11,7 @@ import {
 
 import { CircleUserRound, LogOut } from "lucide-react";
 
-import { Button } from "../ui/button";
+import { Button } from "../../../../components/ui/button";
 import { logout } from "@/app/actions";
 import { useSession } from "next-auth/react";
 
