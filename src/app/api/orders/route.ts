@@ -30,18 +30,6 @@ const generateFakeOrders = (num: number) => {
   return orders;
 };
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "GET") {
-    // Handle GET request to fetch fake users
-    const orders = generateFakeOrders(10); // Generate 10 fake users
-    console.log("orders", orders);
-    return res.status(200).json([]);
-  }
-
-  // Handle unsupported methods
-  res.status(405).json({ message: "Method Not Allowed" });
-}
-
 export async function GET() {
   // Handle GET request to fetch fake users
   const orders = generateFakeOrders(10); // Generate 10 fake users
