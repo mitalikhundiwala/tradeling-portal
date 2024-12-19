@@ -13,6 +13,7 @@ async function authenticateUser(
       email: "test@example.com",
       firstName: "John",
       lastName: "Doe",
+      accessToken: "2342423424",
       roles: [{ id: 1, name: "a" }],
       permissions: ["user.permissions"],
       emailVerified: null,
@@ -40,35 +41,38 @@ export const {
       async authorize(credentials): Promise<IUser | null> {
         if (credentials === null) return null;
 
-        const user = await authenticateUser(
-          credentials.username as string,
-          credentials.password as string
+        // const user = await authenticateUser(
+        //   credentials.username as string,
+        //   credentials.password as string
+        // );
+
+        const response = await fetch(
+          "https://hub-service-uxh1.onrender.com/hub-service/auth/login",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: credentials.username,
+              password: credentials.password,
+            }),
+          }
         );
 
-        // const response = await fetch("https://qa.hykeapi.com//auth/v2/login", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({
-        //     emailId: credentials.username,
-        //     password: credentials.password,
-        //   }),
-        // });
+        if (!response.ok) return null;
 
-        // if (!response.ok) return null;
-
-        //const user = await response.json();
+        const user = await response.json();
 
         if (!user) {
-          return null;
+          throw new Error("Unable to signin");
         }
 
         return {
-          id: user.uid,
+          id: user.id,
           uid: user.uid,
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          name: `${user.firstName} ${user.lastName}`,
+          accessToken: user.accessToken,
           roles: user.roles,
           permissions: user.permissions,
           emailVerified: null,
@@ -78,25 +82,10 @@ export const {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      // If a user is returned from authorize(), add its properties to the token
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.name = user.name;
-      }
-
-      return token;
+      return { ...token, ...user };
     },
     async session({ session, token }) {
-      // Add token properties to the session object
-      if (token) {
-        session.user = {
-          id: token.id as string,
-          email: token.email as string,
-          name: token.name as string,
-          emailVerified: token.emailVerified as null,
-        };
-      }
+      session.user = token as any;
       return session;
     },
   },

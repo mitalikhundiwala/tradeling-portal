@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-import { AppSidebar } from "@/components/navigation/app-sidebar";
+import { AppSidebar } from "@/modules/common/components/navigation/app-sidebar";
 
 import {
   SidebarInset,
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import { SessionProvider } from "next-auth/react";
-import DropdownMenuComponent from "@/components/navigation/drop-down-menu";
+import DropdownMenuComponent from "@/modules/common/components/navigation/drop-down-menu";
 
 export const metadata = {
   title: "My App",

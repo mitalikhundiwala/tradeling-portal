@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { doCredentialLogin } from "@/app/actions";
 import { ORDERS } from "@/lib/routes";
+import { Loader2 } from "lucide-react";
 
 // Define schema using Zod
 const loginSchema = z.object({
@@ -22,7 +23,7 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
   });
@@ -78,8 +79,15 @@ export default function LoginForm() {
             </div>
 
             {/* Submit Button */}
-            <Button type="submit" className="w-full">
-              Login
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Logging in...
+                </>
+              ) : (
+                'Login'
+              )}
             </Button>
           </form>
         </CardContent>
