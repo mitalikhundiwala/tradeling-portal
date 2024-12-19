@@ -10,6 +10,7 @@ export interface IUser extends AdapterUser {
   email: string;
   firstName: string;
   lastName: string;
+  accessToken: string;
   roles: IRole[];
   permissions: string[];
 }
