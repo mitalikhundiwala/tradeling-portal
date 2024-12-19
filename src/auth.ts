@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { IUser } from "@/modules/common/models/user";
-import { signIn } from "@/auth";
 
 async function authenticateUser(
   email: string,
