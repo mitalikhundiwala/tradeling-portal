@@ -67,7 +67,7 @@ export const {
         }
 
         return {
-          id: user.uid ?? "234234j",
+          id: user.id,
           uid: user.uid,
           email: user.email,
           firstName: user.firstName,
