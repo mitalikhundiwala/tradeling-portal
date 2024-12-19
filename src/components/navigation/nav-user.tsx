@@ -24,6 +24,7 @@ export function NavUser() {
   const { isMobile } = useSidebar();
 
   const { data: session } = useSession();
+  console.log(session?.user.accessToken);
 
   function logoutHandler() {
     logout();
@@ -43,7 +44,7 @@ export function NavUser() {
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
-                  {session?.user?.name}
+                  {session?.user?.firstName} {session?.user?.lastName}
                 </span>
                 <span className="truncate text-xs">{session?.user?.email}</span>
               </div>
@@ -63,7 +64,7 @@ export function NavUser() {
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">
-                    {session?.user?.name}
+                    {session?.user?.firstName} {session?.user?.lastName}
                   </span>
                   <span className="truncate text-xs">
                     {session?.user?.email}
