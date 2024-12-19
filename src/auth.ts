@@ -57,7 +57,6 @@ export const {
             }),
           }
         );
-        console.log("response::", response);
 
         if (!response.ok) return null;
 

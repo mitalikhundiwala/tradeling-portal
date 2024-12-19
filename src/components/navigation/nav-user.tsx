@@ -24,7 +24,6 @@ export function NavUser() {
   const { isMobile } = useSidebar();
 
   const { data: session } = useSession();
-  console.log(session?.user.accessToken);
 
   function logoutHandler() {
     logout();
