@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
   const isAuthenticated = !!session?.user;
   console.log("session", session);
   const isPublicRoute = !!PUBLIC_ROUTES.find((route) =>
-    nextUrl.pathname.startsWith(route)
+    nextUrl.pathname.startsWith(route),
   );
 
   if (!isAuthenticated && !isPublicRoute) {
@@ -18,6 +18,8 @@ export async function middleware(request: NextRequest) {
   if (isAuthenticated && isPublicRoute) {
     return NextResponse.redirect(new URL(ORDERS, nextUrl));
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
