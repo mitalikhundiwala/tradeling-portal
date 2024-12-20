@@ -14,3 +14,9 @@ export interface IUser extends AdapterUser {
   roles: IRole[];
   permissions: string[];
 }
+
+export function getInitials(firstName: string, lastName: string) {
+  const firstInitial = firstName.charAt(0).toUpperCase(); // Get first letter of firstName
+  const lastInitial = lastName.charAt(0).toUpperCase(); // Get first letter of lastName
+  return firstInitial + lastInitial; // Concatenate initials
+}
