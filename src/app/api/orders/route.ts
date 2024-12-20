@@ -1,7 +1,5 @@
 // pages/api/users.ts
-import { NextApiRequest, NextApiResponse } from "next";
 import { faker } from "@faker-js/faker";
-import { NextRequest, NextResponse } from "next/server";
 
 export type Order = {
   orderNo: string;

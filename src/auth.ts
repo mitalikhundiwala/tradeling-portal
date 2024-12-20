@@ -2,25 +2,25 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { IUser } from "@/modules/common/models/user";
 
-async function authenticateUser(
-  email: string,
-  password: string
-): Promise<IUser | null> {
-  if (email === "test@example.com" && password === "Password@123") {
-    return {
-      id: "1",
-      uid: "1",
-      email: "test@example.com",
-      firstName: "John",
-      lastName: "Doe",
-      accessToken: "2342423424",
-      roles: [{ id: 1, name: "a" }],
-      permissions: ["user.permissions"],
-      emailVerified: null,
-    }; // Return the user object on successful authentication
-  }
-  return null; // Return null if authentication fails
-}
+// async function authenticateUser(
+//   email: string,
+//   password: string
+// ): Promise<IUser | null> {
+//   if (email === "test@example.com" && password === "Password@123") {
+//     return {
+//       id: "1",
+//       uid: "1",
+//       email: "test@example.com",
+//       firstName: "John",
+//       lastName: "Doe",
+//       accessToken: "2342423424",
+//       roles: [{ id: 1, name: "a" }],
+//       permissions: ["user.permissions"],
+//       emailVerified: null,
+//     }; // Return the user object on successful authentication
+//   }
+//   return null; // Return null if authentication fails
+// }
 
 export const {
   handlers: { GET, POST },
@@ -85,6 +85,7 @@ export const {
       return { ...token, ...user };
     },
     async session({ session, token }) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       session.user = token as any;
       return session;
     },
