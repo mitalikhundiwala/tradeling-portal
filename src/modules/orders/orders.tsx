@@ -9,7 +9,7 @@ import { DataTable } from "@/modules/common/components/table/data-table";
 import { columns } from "@/modules/orders/columns";
 
 export default async function Orders() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`);
+  const response = await fetch(`${process.env.NEXTAUTH_URL}/api/orders`);
 
   const orders = await response.json();
   return (
