@@ -1,6 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { FormattedDate } from "../common/components/date/formatted-date";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -19,11 +20,14 @@ export const columns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: "businessName",
-    header: "businessName",
+    header: "Business Name",
   },
   {
     accessorKey: "orderDate",
     header: "Order Date",
+    cell: ({ row }) => {
+      return <FormattedDate date={row.getValue("orderDate")} />;
+    },
   },
   {
     accessorKey: "orderValue",
