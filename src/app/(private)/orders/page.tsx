@@ -19,7 +19,6 @@ export default async function OrdersPage() {
   const response = await fetch("http://localhost:3000/api/orders");
 
   const orders = await response.json();
-  console.log('orders::', orders);
 
   return (
     <div className="container mx-auto px-6">
