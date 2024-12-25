@@ -1,41 +1,47 @@
-import { getCookie, setCookie } from "cookies-next/client";
+import { deleteCookie } from "cookies-next/client";
+import { ISession } from "@/modules/common/models/user";
+import { auth } from "@/auth";
 
-export const USER_ID_STORE_KEY = "auth.userId";
-export const ACCESS_TOKEN_STORE_KEY = "auth.access.token";
-export const REFRESH_TOKEN_STORE_KEY = "auth.refresh.token";
-export const SELECTED_COUNTRY_KEY = "auth.country";
+// Secret used in your NextAuth configuration
+
+const TL_CALLBACK_URL = "auth.callback.url";
+const TL_CSRF_TOKEN = "auth.token";
 
 export class AuthRepository {
-  static storeUserId(token: string): void {
-    setCookie(USER_ID_STORE_KEY, token);
-  }
+  static getAuthDetails = async (): Promise<{
+    accessToken: string;
+    refreshToken: string;
+    userId: string;
+  } | null> => {
+    try {
+      const session: ISession | null = await auth();
 
-  static storeAccessToken(token: string): void {
-    setCookie(ACCESS_TOKEN_STORE_KEY, token);
-  }
+      if (!session || !session.user) {
+        return null;
+      }
 
-  static storeRefreshToken(token: string): void {
-    setCookie(REFRESH_TOKEN_STORE_KEY, token);
-  }
+      // Extract the token details
+      const accessToken = session.accessToken as string; // Assuming `authCode` is added in session
+      const refreshToken = session.refreshToken as string; // Assuming `refreshToken` is added in session
+      const userId = session.user.id as string; // Default `user.id` from NextAuth
 
-  static retrieveAccessToken(): string | null {
-    const token = getCookie(ACCESS_TOKEN_STORE_KEY);
-    if (!token) {
-      return null;
+      return { accessToken, refreshToken, userId };
+    } catch (error) {
+      console.error("Error retrieving session:", error);
+      throw error;
     }
-    return token;
-  }
+  };
 
-  static retrieveRefreshToken(): string | null {
-    const token = getCookie(REFRESH_TOKEN_STORE_KEY);
-    if (!token) {
-      return null;
-    }
-    return token;
-  }
+  static deleteCallBackUrl = () => {
+    deleteCookie(TL_CALLBACK_URL);
+  };
 
-  static hasToken(): boolean {
-    const token = AuthRepository.retrieveAccessToken();
-    return token ? true : false;
-  }
+  static deleteToken = () => {
+    deleteCookie(TL_CSRF_TOKEN);
+  };
+
+  static deleteAllCookies = () => {
+    AuthRepository.deleteCallBackUrl();
+    AuthRepository.deleteToken();
+  };
 }

@@ -1,26 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { IUser } from "@/modules/common/models/user";
-
-// async function authenticateUser(
-//   email: string,
-//   password: string
-// ): Promise<IUser | null> {
-//   if (email === "test@example.com" && password === "Password@123") {
-//     return {
-//       id: "1",
-//       uid: "1",
-//       email: "test@example.com",
-//       firstName: "John",
-//       lastName: "Doe",
-//       accessToken: "2342423424",
-//       roles: [{ id: 1, name: "a" }],
-//       permissions: ["user.permissions"],
-//       emailVerified: null,
-//     }; // Return the user object on successful authentication
-//   }
-//   return null; // Return null if authentication fails
-// }
+import { IUser, ISession, IToken } from "@/modules/common/models/user";
+import { AuthService } from "@/modules/login/services/auth.service";
 
 export const {
   handlers: { GET, POST },
@@ -29,6 +10,14 @@ export const {
   auth,
 } = NextAuth({
   debug: true,
+  cookies: {
+    csrfToken: {
+      name: "auth.token",
+    },
+    callbackUrl: {
+      name: "auth.callback.url",
+    },
+  },
   session: {
     strategy: "jwt",
   },
@@ -40,43 +29,15 @@ export const {
       },
       async authorize(credentials): Promise<IUser | null> {
         if (credentials === null) return null;
-
-        // const user = await authenticateUser(
-        //   credentials.username as string,
-        //   credentials.password as string
-        // );
-
-        const response = await fetch(
-          "https://hub-service-uxh1.onrender.com/hub-service/auth/login",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: credentials.username,
-              password: credentials.password,
-            }),
-          }
-        );
-
-        if (!response.ok) return null;
-
-        const user = await response.json();
-
-        if (!user) {
-          throw new Error("Unable to signin");
+        try {
+          const response = await AuthService.authenticate({
+            username: credentials.username as string,
+            password: credentials.password as string,
+          });
+          return response;
+        } catch (error) {
+          throw new Error(JSON.stringify(error));
         }
-
-        return {
-          id: user.id,
-          uid: user.uid,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          accessToken: user.accessToken,
-          roles: user.roles,
-          permissions: user.permissions,
-          emailVerified: null,
-        };
       },
     }),
   ],
@@ -84,9 +45,13 @@ export const {
     async jwt({ token, user }) {
       return { ...token, ...user };
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: ISession; token: IToken }) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       session.user = token as any;
+      session.accessToken = token.accessToken;
+      session.refreshToken = token.refreshToken;
+      session.roles = token.roles;
+      session.permissions = token.permissions;
       return session;
     },
   },

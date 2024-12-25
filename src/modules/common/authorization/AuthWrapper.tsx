@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useEffect } from "react";
 import { AuthStatus } from "@/modules/common/authorization/models/auth.model";
 import { IUser } from "@/modules/common/models/user";
+import { useSession } from "next-auth/react";
+import { AuthRepository } from "@/lib/auth.repository";
 
 export interface IAuthContext {
   status: AuthStatus;
@@ -17,6 +19,8 @@ const AppContext = createContext<IAuthContext>({
 });
 
 export function AuthWrapper({ children }: { children: React.ReactNode }) {
+  const { data: session } = useSession();
+
   const status = AuthStatus.UNAUTHENTICATED;
   const user = null;
   const permissions: string[] = [];
@@ -28,10 +32,9 @@ export function AuthWrapper({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // const hasToken = AuthRepository.hasToken();
-    // if (!hasToken) {
-    //   router.push("/login");
-    // }
+    if (session === null) {
+      AuthRepository.deleteAllCookies();
+    }
   }, []);
 
   return (
