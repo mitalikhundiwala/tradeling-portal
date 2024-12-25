@@ -20,6 +20,7 @@ export async function middleware(request: NextRequest) {
   if (isAuthenticated && isPublicRoute) {
     return NextResponse.redirect(new URL(ORDERS, nextUrl));
   }
+
   return NextResponse.next();
 }
 

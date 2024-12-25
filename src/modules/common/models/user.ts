@@ -30,3 +30,9 @@ export interface IToken extends JWT {
   roles?: IRole[] | null;
   permissions?: string[] | null;
 }
+
+export function getInitials(firstName: string, lastName: string) {
+  const firstInitial = firstName.charAt(0).toUpperCase(); // Get first letter of firstName
+  const lastInitial = lastName.charAt(0).toUpperCase(); // Get first letter of lastName
+  return firstInitial + lastInitial; // Concatenate initials
+}
