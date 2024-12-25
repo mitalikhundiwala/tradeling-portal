@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { AuthWrapper } from "@/modules/common/authorization/AuthWrapper";
 import { SessionProvider } from "next-auth/react";
 import { ToastContainer, Bounce } from "react-toastify";
+import QueryProvider from "@/providers/QueryProvider";
 
 import "./globals.css";
 
@@ -34,7 +35,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
       >
         <SessionProvider>
-          <AuthWrapper>{children}</AuthWrapper>
+          <AuthWrapper>
+            <QueryProvider>{children}</QueryProvider>
+          </AuthWrapper>
           <ToastContainer
             position="top-right"
             autoClose={5000}
