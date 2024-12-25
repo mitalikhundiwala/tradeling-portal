@@ -2,13 +2,13 @@
 
 import React, { createContext, useContext, useEffect } from "react";
 import { AuthStatus } from "@/modules/common/authorization/models/auth.model";
-import { IUser } from "@/modules/common/models/user";
+import { ILoggedInUser } from "@/modules/common/models/user";
 import { useSession } from "next-auth/react";
 import { AuthRepository } from "@/lib/auth.repository";
 
 export interface IAuthContext {
   status: AuthStatus;
-  user: IUser | null;
+  user: ILoggedInUser | null;
   permissions: string[];
 }
 

@@ -1,8 +1,8 @@
-import { IUser } from "@/modules/common/models/user";
+import { ILoggedInUser } from "@/modules/common/models/user";
 
 export class ResponseTransformer {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static fromServerResponse(userData: any): IUser {
+  static fromServerResponse(userData: any): ILoggedInUser {
     const { id, firstName, lastName, email, accessToken, refreshToken } =
       userData;
 

@@ -7,7 +7,7 @@ export interface IRole {
   name: string;
 }
 
-export interface IUser extends AdapterUser {
+export interface ILoggedInUser extends AdapterUser {
   email: string;
   firstName: string;
   lastName: string;
