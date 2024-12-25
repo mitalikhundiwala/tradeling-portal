@@ -57,15 +57,15 @@ export enum Environment {
 }
 
 export interface IConfig {
-  currentEnvironment: Environment;
+  currentEnvironment: string;
   API_ROOT: string;
   getApiUrlFromRoot: (relativePath: string) => string;
   getHeaders: (headersFor: string[]) => RequestHeaders;
 }
 
 const config: IConfig = {
-  currentEnvironment: process.env.NEXT_PUBLIC_API_BASE_URL as Environment,
-  API_ROOT: process.env.NEXT_PUBLIC_API_BASE_URL ?? "",
+  currentEnvironment: "https://hub-service-uxh1.onrender.com/hub-service",
+  API_ROOT: "https://hub-service-uxh1.onrender.com/hub-service",
   getApiUrlFromRoot,
   getHeaders,
 };
