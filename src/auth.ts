@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { IUser, ISession, IToken } from "@/modules/common/models/user";
+import { ILoggedInUser, ISession, IToken } from "@/modules/common/models/user";
 import { AuthService } from "@/modules/login/services/auth.service";
 
 export const {
@@ -27,7 +27,7 @@ export const {
         username: {},
         password: {},
       },
-      async authorize(credentials): Promise<IUser | null> {
+      async authorize(credentials): Promise<ILoggedInUser | null> {
         if (credentials === null) return null;
         try {
           const response = await AuthService.authenticate({

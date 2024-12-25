@@ -72,7 +72,7 @@ export const successResponse = (
   return {
     code: response.status,
     message: response.statusText,
-    data: response.data,
+    data: response?.data?.data ?? response.data,
   };
 };
 
