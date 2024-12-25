@@ -22,6 +22,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
+import logo from "@/assets/logo.svg";
+
 const data = {
   navMain: [
     {
@@ -55,7 +57,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Link href="/">
           <span className="grow inline-block align-middle">
             <Image
-              src="/image.svg"
+              src={logo.src}
               alt="Icon"
               width="200"
               height="200"

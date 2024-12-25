@@ -5,13 +5,21 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { DataTable } from "@/modules/common/components/table/data-table";
-import { columns } from "@/modules/orders/columns";
+import { OrdersService } from "./services/orders.service";
+import OrdersTable from "./orders-table";
 
-export default async function Orders() {
-  const response = await fetch(`${process.env.NEXTAUTH_URL}/api/orders`);
+interface IProps {
+  page: number;
+  size: number;
+}
 
-  const orders = await response.json();
+export default async function Orders({ page, size }: IProps) {
+  const response = await OrdersService.retrieveOrders({
+    page,
+    limit: size,
+  });
+
+  const orders = response.orders;
   return (
     <div className="container mx-auto px-6">
       <Breadcrumb className="mb-6">
@@ -27,7 +35,12 @@ export default async function Orders() {
       </Breadcrumb>
       <h1 className="text-3xl font-semibold text-gray-800 mb-8">Orders</h1>
       <div className="bg-white overflow-hidden">
-        <DataTable columns={columns} data={orders.data} />
+        <OrdersTable
+          page={page}
+          size={size}
+          orders={orders}
+          total={response.total}
+        />
       </div>
     </div>
   );
