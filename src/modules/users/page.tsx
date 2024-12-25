@@ -18,6 +18,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { FormattedDate } from "@/modules/common/components/date/formatted-date";
 import { IUser } from "@/modules/users/models/user.model";
 import { DataTable } from "@/modules/common/components/table/data-table";
+import { Pagination } from "@/modules/common/components/pagination/pagination.component";
 
 export interface IProps {
   initialData: IUserPage | null;
@@ -80,6 +81,13 @@ const UserListPage: FunctionComponent<IProps> = ({ initialData }: IProps) => {
       </Breadcrumb>
       <div className="bg-white py-6">
         <DataTable columns={columns} data={data?.items ?? []} />
+        <Pagination
+          currentPage={1}
+          totalCount={100}
+          onPageChange={() => {}}
+          onPageSizeChange={() => {}}
+          rowsPerPage={10}
+        />
       </div>
     </div>
   );
