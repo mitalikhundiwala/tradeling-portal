@@ -36,5 +36,8 @@ export const columns: ColumnDef<IOrder>[] = [
   {
     accessorKey: "orderStatus",
     header: "Order Status",
+    meta: {
+      filterKey: "orderStatus",
+    },
   },
 ];

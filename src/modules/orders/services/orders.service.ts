@@ -1,4 +1,3 @@
-import request from "@/lib/request";
 import { getNextApiUrlFromRoot } from "@/lib/global.config";
 import { IOrdersPage } from "../models/order";
 import { ResponseTransformer } from "./response.transformer";
@@ -6,6 +5,7 @@ import { ResponseTransformer } from "./response.transformer";
 export interface IOrdersRequestParams {
   page: number;
   limit: number;
+  statuses: string[];
 }
 
 export const prepareOrdersRequest = (data = {}) => ({
@@ -18,17 +18,29 @@ export class OrdersService {
   static async retrieveOrders({
     page,
     limit,
+    statuses,
   }: IOrdersRequestParams): Promise<IOrdersPage> {
     const params = {
       page,
       limit,
+      statuses,
     };
-
-    const response = await request(prepareOrdersRequest(params));
-    const orders = ResponseTransformer.fromServerResponse(response.data.orders);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // const response = await request(prepareOrdersRequest(params));
+    const urlParams = new URLSearchParams();
+    urlParams.append("page", params.page.toString());
+    urlParams.append("limit", params.limit.toString());
+    if (params.statuses.length) {
+      urlParams.append("statuses", params.statuses.join(",").toString());
+    }
+    const response = await fetch(
+      `http://localhost:3000/api/orders?${urlParams.toString()}`,
+    );
+    const data = await response.json();
+    const orders = ResponseTransformer.fromServerResponse(data.data.orders);
     return {
       orders,
-      total: response.data.totalCount,
+      total: data.data.totalCount,
       page,
       limit,
     };
