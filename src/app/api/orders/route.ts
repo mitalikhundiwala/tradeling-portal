@@ -1,5 +1,6 @@
 // pages/api/users.ts
 import { faker } from "@faker-js/faker";
+import { NextRequest } from "next/server";
 
 export type Order = {
   orderNo: string;
@@ -10,27 +11,39 @@ export type Order = {
 };
 
 // Generate fake user data
-const generateFakeOrders = (num: number) => {
+const generateFakeOrders = (size: number, statuses: string[]) => {
   const orders: Order[] = [];
-  for (let i = 0; i < num; i++) {
+  const validStatuses = ["In Progress", "Delivered", "Cancelled"].filter(
+    (datum) => {
+      if (statuses.length) return statuses.includes(datum);
+      return true;
+    },
+  );
+  for (let i = 0; i < size; i++) {
     orders.push({
       orderNo: `AE-${faker.string.alpha({ length: 1 }).toUpperCase()}-${faker.number.int({ min: 1000000, max: 9999999 }).toString().padStart(7, "0")}`,
       businessName: `${faker.commerce.productAdjective()} ${faker.commerce.product()} ${faker.commerce.productMaterial()}`,
       orderDate: faker.date.anytime(),
       orderValue: faker.number.int({ min: 100, max: 100000 }),
-      orderStatus: faker.helpers.arrayElement([
-        "In Progress",
-        "Delivered",
-        "Cancelled",
-      ]),
+      orderStatus: faker.helpers.arrayElement(validStatuses),
     });
   }
   return orders;
 };
 
-export async function GET() {
-  // Handle GET request to fetch fake users
-  const orders = generateFakeOrders(10); // Generate 10 fake users
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
+  const limit = searchParams.get("limit")
+    ? Number(searchParams.get("limit"))
+    : 10;
+  const statuses =
+    searchParams.has("statuses") && searchParams.get("statuses") !== null
+      ? searchParams.get("statuses")!.split(",") // Use non-null assertion
+      : [];
 
-  return Response.json({ data: orders });
+  // Handle GET request to fetch fake users
+  const orders = generateFakeOrders(limit, statuses); // Generate 10 fake users
+
+  return Response.json({ data: { orders, page, limit, totalCount: 100 } });
 }

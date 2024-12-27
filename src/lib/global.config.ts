@@ -46,6 +46,9 @@ export const getHeaders = (headersFor: string[]): RequestHeaders => {
 export const getApiUrlFromRoot = (url: string) => {
   return getAPIRootURLWithProtocol(config.API_ROOT) + url;
 };
+export const getNextApiUrlFromRoot = (url: string) => {
+  return process.env.NEXTAUTH_URL + url;
+};
 
 export enum Environment {
   LOCAL = "local",
