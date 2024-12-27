@@ -68,8 +68,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {data.navMain.map((item) => {
           return (
             <SidebarGroup key={item.title}>
-              <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-              <SidebarGroupContent>
+              <SidebarGroupLabel className="text-sm font-bold">
+                {item.title}
+              </SidebarGroupLabel>
+              <SidebarGroupContent className="pl-2">
                 <SidebarMenu>
                   {item.items.map((item) => {
                     const isActive = pathname === item.url;

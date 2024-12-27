@@ -1,22 +1,20 @@
 import request from "@/lib/request";
 import { IUser } from "@/modules/users/models/user.model";
-import { getApiUrlFromRoot } from "@/lib/global.config";
 
 export interface IUserPage {
   items: IUser[];
-  page: number;
-  limit: number;
   totalCount: number;
 }
 
 export interface IRetrieveUserApiParams {
-  page?: number;
-  limit?: number;
+  page?: string;
+  limit?: string;
 }
 
 export const prepareUserListRequest = (params: IRetrieveUserApiParams) => ({
   method: "GET",
-  url: getApiUrlFromRoot("/users/getAllUsers"),
+  // url: getApiUrlFromRoot("/users/getAllUsers"),
+  url: "https://account-management-service-gden.onrender.com/users/getAllUsers",
   data: params,
 });
 
@@ -29,8 +27,6 @@ export default class UserService {
     return {
       items: response.data.userList,
       totalCount: response.data?.totalCount ?? 100,
-      page: response.data?.feeds?.page ?? 1,
-      limit: response.data?.feeds?.limit ?? 10,
     };
   }
 }

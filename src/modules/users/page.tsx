@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 "use client";
-import { FunctionComponent, useMemo } from "react";
+import { FunctionComponent, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Breadcrumb,
@@ -11,27 +11,31 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/modules/common/components";
+import { H1 } from "@/modules/common/components/Typograhphy";
 import UserService, { IUserPage } from "@/modules/users/services/user.service";
 import { House } from "lucide-react";
 import { useParams } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
-import { FormattedDate } from "@/modules/common/components/date/formatted-date";
 import { IUser } from "@/modules/users/models/user.model";
-import { DataTable } from "@/modules/common/components/table/data-table";
+import { Pagination } from "@/modules/common/components/Pagination.component";
+import { DataTable } from "@/modules/common/components/Table.component";
+import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
+import { CreateUserModal } from "./components/CreateUserModal.component";
 
 export interface IProps {
   initialData: IUserPage | null;
 }
 
 export interface IQueryParams {
-  page?: number;
-  limit?: number;
+  page?: string;
+  limit?: string;
 }
 
 const UserListPage: FunctionComponent<IProps> = ({ initialData }: IProps) => {
   const params: IQueryParams = useParams();
-  const { page, limit } = params;
-
+  const { page = "1", limit = "10" } = params;
+  const [isOpen, setOpen] = useState(false);
   const columns: ColumnDef<IUser>[] = useMemo(
     () => [
       {
@@ -39,35 +43,47 @@ const UserListPage: FunctionComponent<IProps> = ({ initialData }: IProps) => {
         header: "Id",
       },
       {
-        accessorKey: "Email",
-        header: "email",
+        accessorKey: "name",
+        header: "Name",
+        cell: ({ row: { original } }) => {
+          return <div>{`${original.firstName} ${original.lastName}`}</div>;
+        },
       },
       {
-        accessorKey: "createdDate",
-        header: "Created At",
-        cell: ({ row }) => {
-          return <FormattedDate date={row.getValue("createdAt")} />;
-        },
+        accessorKey: "email",
+        header: "Email",
       },
     ],
     [],
   );
 
-  const { isLoading, error, data, refetch, isFetching } = useQuery({
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["retrieveUserPage", page, limit],
     queryFn: () => {
       const params = {
         limit,
         page,
       };
+
       return UserService.retrieveUserList(params);
     },
     initialData,
+    staleTime: 100,
+  });
+
+  const _handleModalToggle = (isOpen: boolean) => {
+    setOpen(isOpen);
+  };
+
+  const reactTableInstance = useReactTable({
+    columns,
+    data: data?.items ?? [],
+    getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <div>
-      <Breadcrumb>
+      <Breadcrumb className="py-4">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/">
@@ -78,8 +94,39 @@ const UserListPage: FunctionComponent<IProps> = ({ initialData }: IProps) => {
           <BreadcrumbPage>Users</BreadcrumbPage>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="bg-white py-6">
-        <DataTable columns={columns} data={data?.items ?? []} />
+      <div className="bg-white p-4">
+        <div className="flex justify-between">
+          <H1 className="font-bold text-lg">Users</H1>
+          <div>
+            <Button
+              className="font-bold"
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              Create User
+            </Button>
+          </div>
+        </div>
+        {!isLoading && data?.items.length ? (
+          <>
+            <DataTable tableInstance={reactTableInstance} />
+            <div className="pt-10">
+              <Pagination
+                currentPage={parseInt(page as string)}
+                totalCount={data?.totalCount as number}
+                onPageChange={() => {}}
+                onPageSizeChange={() => {}}
+                rowsPerPage={parseInt(limit)}
+              />
+            </div>
+          </>
+        ) : null}
+        <CreateUserModal
+          isOpen={isOpen}
+          handleSubmit={() => {}}
+          handleModalToggle={_handleModalToggle}
+        />
       </div>
     </div>
   );
