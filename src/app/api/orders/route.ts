@@ -1,6 +1,5 @@
 // pages/api/users.ts
 import { faker } from "@faker-js/faker";
-import { isNil } from "lodash";
 import { NextRequest } from "next/server";
 
 export type Order = {
@@ -38,10 +37,10 @@ export async function GET(request: NextRequest) {
   const limit = searchParams.get("limit")
     ? Number(searchParams.get("limit"))
     : 10;
-
-  const statuses = !isNil(searchParams.get("statuses"))
-    ? searchParams.get("statuses").split(",")
-    : [];
+  const statuses =
+    searchParams.has("statuses") && searchParams.get("statuses") !== null
+      ? searchParams.get("statuses")!.split(",") // Use non-null assertion
+      : [];
 
   // Handle GET request to fetch fake users
   const orders = generateFakeOrders(limit, statuses); // Generate 10 fake users

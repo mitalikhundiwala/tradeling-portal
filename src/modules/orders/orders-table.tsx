@@ -5,8 +5,8 @@ import { columns } from "@/modules/orders/columns";
 import { IOrdersPage } from "./models/order";
 import { DataTablePagination } from "../common/components/table/data-table-pagination";
 import { DataTableToolbar } from "../common/components/table/data-table-toolbar";
-import { use, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { use, useEffect, useMemo, useRef, useState } from "react";
+
 import { useQuery } from "@tanstack/react-query";
 import { OrdersService } from "./services/orders.service";
 import {
@@ -18,7 +18,8 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { reduce } from "lodash";
+import { isEmpty, reduce } from "lodash";
+import useUpdateSearchParams from "@/hooks/use-search-params";
 
 interface IProps {
   ordersReponse: Promise<IOrdersPage>;
@@ -31,35 +32,61 @@ interface Result {
   [key: string]: string[]; // Allow dynamic keys of type string, with values being arrays of strings
 }
 
+interface IQueryParams {
+  page?: number;
+  size?: number;
+  statuses?: string[];
+}
+
 export default function OrdersTable(props: IProps) {
   const response = use(props.ordersReponse);
 
-  const [page, setPage] = useState(props.page);
-  const [size, setSize] = useState(props.size);
-  const [statuses, setStatuses] = useState(props.statuses);
-
-  const searchParams = useSearchParams();
+  const setSearchParams = useUpdateSearchParams();
 
   const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: page - 1,
-    pageSize: size,
+    pageIndex: props.page - 1,
+    pageSize: props.size,
+  });
+
+  const prevPaginationRef = useRef({
+    pageIndex: props.page - 1,
+    pageSize: props.size,
   });
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
-    {
-      id: "orderStatus",
-      value: statuses,
-    },
-  ]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(() => {
+    if (props.statuses.length) {
+      return [
+        {
+          id: "orderStatus",
+          value: props.statuses,
+        },
+      ];
+    }
+    return [];
+  });
 
   const { data, isFetching } = useQuery({
-    queryKey: ["retrieveOrders", page, size, statuses],
+    queryKey: [
+      "retrieveOrders",
+      pagination.pageSize,
+      pagination.pageIndex,
+      columnFilters,
+    ],
     queryFn: () => {
+      const filters: Result = reduce(
+        columnFilters,
+        (acc, item) => {
+          acc[item.id] = item.value as string[];
+          return acc;
+        },
+        {} as Result,
+      );
+      const statuses = filters?.["orderStatus"];
       return OrdersService.retrieveOrders({
-        page: page,
-        limit: size,
-        statuses,
+        page: pagination.pageIndex,
+        limit: pagination.pageSize,
+        statuses: statuses ? statuses.join(",") : null,
       });
     },
     initialData: response,
@@ -67,21 +94,36 @@ export default function OrdersTable(props: IProps) {
   });
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (pagination.pageSize !== size) {
-      params.set("page", "1");
-      params.set("size", pagination.pageSize.toString());
-      setPage(1);
-      setSize(pagination.pageSize);
-    } else {
-      if (pagination.pageIndex + 1 !== page) {
-        params.set("page", (pagination.pageIndex + 1).toString());
-        setPage(pagination.pageIndex + 1);
-      }
+    const params: IQueryParams = {
+      page: pagination.pageIndex + 1,
+      size: pagination.pageSize,
+    };
+
+    if (pagination.pageSize !== prevPaginationRef.current.pageSize) {
+      setPagination({
+        ...pagination,
+        pageIndex: 0,
+      });
     }
 
-    window.history.pushState(null, "", `?${params.toString()}`);
-  }, [pagination]);
+    const filters: Result = reduce(
+      columnFilters,
+      (acc, item) => {
+        acc[item.id] = item.value as string[];
+        return acc;
+      },
+      {} as Result,
+    );
+    if (!isEmpty(filters)) {
+      if (filters["orderStatus"]?.length) {
+        params.statuses = filters["orderStatus"];
+      }
+    } else {
+      params.statuses = undefined;
+    }
+    setSearchParams(params);
+    prevPaginationRef.current = pagination;
+  }, [pagination, columnFilters]);
 
   useEffect(() => {
     const filters: Result = reduce(
@@ -92,17 +134,16 @@ export default function OrdersTable(props: IProps) {
       },
       {} as Result,
     );
-    if (filters["orderStatus"].length) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("statuses", filters["orderStatus"].toString());
-      setStatuses(filters["orderStatus"]);
-      console.log("statuses:::", statuses);
-      window.history.pushState(null, "", `?${params.toString()}`);
+    if (filters?.["orderStatus"]?.length) {
+      setPagination({
+        ...pagination,
+        pageIndex: 0,
+      });
     }
   }, [columnFilters]);
 
   const tableData = useMemo(
-    () => (isFetching ? Array(size).fill({}) : data.orders),
+    () => (isFetching ? Array(pagination.pageSize).fill({}) : data.orders),
     [isFetching, data],
   );
 
