@@ -2,18 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { FormattedDate } from "../common/components/date/formatted-date";
+import { IOrder } from "./models/order";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Order = {
-  orderNo: string;
-  businessName: string;
-  orderDate: Date;
-  orderValue: number;
-  orderStatus: string;
-};
-
-export const columns: ColumnDef<Order>[] = [
+export const columns: ColumnDef<IOrder>[] = [
   {
     accessorKey: "orderNo",
     header: "Order No",
@@ -45,5 +36,8 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: "orderStatus",
     header: "Order Status",
+    meta: {
+      filterKey: "orderStatus",
+    },
   },
 ];
