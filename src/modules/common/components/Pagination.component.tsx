@@ -1,3 +1,5 @@
+"use client";
+
 import { FunctionComponent } from "react";
 import {
   Pagination as PaginationComponent,
@@ -8,7 +10,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
 import {
   Select,
   SelectContent,
@@ -16,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import classnames from "classnames";
 
 const getPageNumbers = (
   currentPage: number,
@@ -83,7 +85,14 @@ export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
         <PaginationComponent>
           <PaginationContent>
             <PaginationItem>
-              <PaginationPrevious href="#" />
+              <PaginationPrevious
+                href="#"
+                className={
+                  currentPage <= 1
+                    ? "pointer-events-none opacity-50"
+                    : undefined
+                }
+              />
             </PaginationItem>
             {pageNumbers.map((page, idx) => {
               return (
@@ -93,6 +102,10 @@ export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
                   ) : (
                     <PaginationLink
                       onClick={() => onPageSizeChange(Number(page))}
+                      isActive={page === currentPage}
+                      className={classnames({
+                        "bg-primary text-white": page === currentPage,
+                      })}
                     >
                       {page}
                     </PaginationLink>
@@ -101,23 +114,30 @@ export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
               );
             })}
             <PaginationItem>
-              <PaginationNext href="#" />
+              <PaginationNext
+                className={
+                  currentPage >= pageNumbers.length
+                    ? "pointer-events-none opacity-50"
+                    : undefined
+                }
+                href="#"
+              />
             </PaginationItem>
           </PaginationContent>
         </PaginationComponent>
       </div>
       <div>
         <Select
-          value={rowsPerPage?.toString() ?? ""}
+          value={"10"}
           onValueChange={(value) => {
             onPageChange(Number(value));
           }}
         >
           <SelectTrigger className="h-8 w-[70px]">
-            <SelectValue placeholder={currentPage} />
+            <SelectValue placeholder={"10"} />
           </SelectTrigger>
           <SelectContent side="top">
-            {[10, 20, 30, 40, 50].map((pageSize) => (
+            {[10, 30, 50].map((pageSize) => (
               <SelectItem key={pageSize} value={`${pageSize}`}>
                 {pageSize}
               </SelectItem>
