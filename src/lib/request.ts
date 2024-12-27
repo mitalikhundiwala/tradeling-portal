@@ -4,8 +4,6 @@ import axios, {
   ResponseType,
   AxiosResponse,
 } from "axios";
-import isEmpty from "lodash/isEmpty";
-import { AuthRepository } from "@/lib/auth.repository";
 import { TradelingHttpErrorClass } from "@/lib/http-error";
 import { getHeaders } from "@/lib/global.config";
 
@@ -79,12 +77,12 @@ export const successResponse = (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const prepareRequestHeaders = async (headers: any = {}) => {
   const modifiedHeaders = { ...headers };
-  const token = await AuthRepository.getAuthDetails();
-  const accessToken = token?.accessToken;
+  //const token = await AuthRepository.getAuthDetails();
+  //const accessToken = token?.accessToken;
 
-  if (accessToken) {
-    modifiedHeaders.Authorization = `Bearer ${accessToken}`;
-  }
+  // if (accessToken) {
+  //   modifiedHeaders.Authorization = `Bearer ${accessToken}`;
+  // }
 
   return modifiedHeaders;
 };
@@ -109,14 +107,14 @@ export const prepareAxiosConfiguration = async (
     headers: requestHeaders,
   };
 
-  if (method === "GET" && !isEmpty(data)) {
+  if (method === "GET" && data) {
     requestConfig = {
       ...requestConfig,
       params: data,
     };
   }
 
-  if (method !== "GET" && !isEmpty(data)) {
+  if (method !== "GET" && data) {
     requestConfig = {
       ...requestConfig,
       data,

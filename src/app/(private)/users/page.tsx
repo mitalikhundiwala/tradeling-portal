@@ -2,6 +2,7 @@
 
 import { Metadata } from "next";
 import UserList from "@/modules/users/page";
+import UserService, { IUserPage } from "@/modules/users/services/user.service";
 
 export const metadata: Metadata = {
   title: "Users",
@@ -9,9 +10,9 @@ export const metadata: Metadata = {
 };
 
 interface UsersPageProps {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | undefined;
-  };
+  }>;
 }
 
 const fetchDataWithDelay = async () => {
@@ -26,12 +27,12 @@ const fetchDataWithDelay = async () => {
 };
 
 export default async function UsersPage({ searchParams }: UsersPageProps) {
-  const { page, limit } = await searchParams;
-  const users = await fetchDataWithDelay();
-
+  const { page = "1", limit = "10" } = await searchParams;
+  await fetchDataWithDelay();
+  const users = await UserService.retrieveUserList({ page, limit });
   return (
     <div>
-      <UserList initialData={null} />
+      <UserList initialData={users} />
     </div>
   );
 }

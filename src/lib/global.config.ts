@@ -1,4 +1,3 @@
-import memoize from "lodash/memoize";
 export enum ContentType {
   JSON = "JSON",
   FORM_URL_ENCODED = "FORM_URL_ENCODED",
@@ -31,14 +30,14 @@ export const prepareHeaders = (headersFor: string[]): RequestHeaders => {
   return requestHeaders;
 };
 
-const getAPIRootURLWithProtocol = memoize((configAPIRoot: string): string => {
+const getAPIRootURLWithProtocol = (configAPIRoot: string): string => {
   if (!configAPIRoot) {
     return "";
   }
 
   const url = new URL(configAPIRoot);
   return url.toString();
-});
+};
 
 export const getHeaders = (headersFor: string[]): RequestHeaders => {
   return prepareHeaders(headersFor);
