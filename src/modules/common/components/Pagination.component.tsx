@@ -61,20 +61,15 @@ const getPageNumbers = (
 export interface IProps {
   currentPage: number;
   totalCount: number;
-  rowsPerPage: number;
+  pageSize: string;
   onPageChange: (page: number) => void;
-  onPageSizeChange: (pageSize: number) => void;
+  onPageSizeChange: (pageSize: string) => void;
 }
 
 export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
-  const {
-    currentPage,
-    onPageChange,
-    totalCount,
-    rowsPerPage,
-    onPageSizeChange,
-  } = props;
-  const totalPages = Math.ceil(totalCount / rowsPerPage);
+  const { currentPage, onPageChange, totalCount, pageSize, onPageSizeChange } =
+    props;
+  const totalPages = Math.ceil(totalCount / pageSize);
   const pageNumbers = getPageNumbers(currentPage, totalPages);
   return (
     <div className="flex justify-between">
@@ -101,7 +96,7 @@ export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
                     <PaginationEllipsis />
                   ) : (
                     <PaginationLink
-                      onClick={() => onPageSizeChange(Number(page))}
+                      onClick={() => onPageChange(Number(page))}
                       isActive={page === currentPage}
                       className={classnames({
                         "bg-primary text-white": page === currentPage,
@@ -128,9 +123,9 @@ export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
       </div>
       <div>
         <Select
-          value={"10"}
+          value={pageSize}
           onValueChange={(value) => {
-            onPageChange(Number(value));
+            onPageSizeChange(value);
           }}
         >
           <SelectTrigger className="h-8 w-[70px]">
