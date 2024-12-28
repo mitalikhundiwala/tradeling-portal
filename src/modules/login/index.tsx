@@ -10,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { doCredentialLogin } from "@/app/actions";
 import { ORDERS } from "@/lib/routes";
 import { Loader2 } from "lucide-react";
-import { useToast, NOTIFICATION_TYPE } from "@/lib/toast";
 import { useRouter } from "next/navigation";
 
 // Define schema using Zod
@@ -30,7 +29,6 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const { showToast } = useToast();
   const router = useRouter();
 
   const onSubmit = async (data: LoginFormInputs) => {
@@ -44,10 +42,11 @@ export default function LoginForm() {
     } catch (e) {
       const errorMessage =
         e instanceof Error ? e.message : "An unknown error occurred";
-      showToast({
-        title: errorMessage,
-        type: NOTIFICATION_TYPE.ERROR,
-      });
+      console.log("login error", errorMessage);
+      // showToast({
+      //   title: errorMessage,
+      //   type: NOTIFICATION_TYPE.ERROR,
+      // });
     }
   };
 
