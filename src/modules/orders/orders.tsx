@@ -9,14 +9,22 @@ import { OrdersService } from "./services/orders.service";
 import { Suspense } from "react";
 import OrdersTable from "./orders-table";
 import { House } from "lucide-react";
+import { getDictionary } from "@/app/actions/dictionary";
+import { Locale } from "i18n.config";
 
 interface IProps {
   page: number;
   size: number;
   statuses: string | null;
+  params: {
+    lang: Locale;
+  };
 }
 
-export default function Orders({ page, size, statuses }: IProps) {
+export default async function Orders({ page, size, statuses, params }: IProps) {
+  const lang = params.lang;
+  const intl = await getDictionary(lang);
+  console.log(intl);
   const statusesArray = statuses ? statuses.split(",") : [];
   const ordersReponse = OrdersService.retrieveOrders({
     page,
@@ -35,14 +43,16 @@ export default function Orders({ page, size, statuses }: IProps) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/orders">Orders</BreadcrumbLink>
+            <BreadcrumbLink href="/orders">{intl.ordersTitle}</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <div className="bg-white p-4">
-        <h1 className="text-3xl font-semibold text-gray-800 mb-8">Orders</h1>
+        <h1 className="text-3xl font-semibold text-gray-800 mb-8">
+          {intl.ordersTitle}
+        </h1>
         <div className="bg-white overflow-hidden">
-          <Suspense fallback={<p>Loading Orders..</p>}>
+          <Suspense fallback={<p>{intl.ordersLoading}</p>}>
             <OrdersTable
               ordersReponse={ordersReponse}
               page={page}
