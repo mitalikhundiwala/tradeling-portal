@@ -1,8 +1,6 @@
-/* eslint-disable */
-
 import { Metadata } from "next";
 import UserList from "@/modules/users/page";
-import UserService, { IUserPage } from "@/modules/users/services/user.service";
+import UserService from "@/modules/users/services/user.service";
 
 export const metadata: Metadata = {
   title: "Users",
@@ -22,7 +20,7 @@ const fetchDataWithDelay = async () => {
         { id: 1, name: "John Doe", email: "john@example.com" },
         { id: 2, name: "Jane Smith", email: "jane@example.com" },
       ]);
-    }, 5000); // 3-second delay
+    }, 2000); // 3-second delay
   });
 };
 
@@ -32,7 +30,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
   const users = await UserService.retrieveUserList({ page, limit });
   return (
     <div>
-      <UserList initialData={users} />
+      <UserList initialData={users} initialDataUpdatedAt={Date.now()} />
     </div>
   );
 }

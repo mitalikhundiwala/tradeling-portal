@@ -26,7 +26,7 @@ export class OrdersService {
       limit,
       statuses,
     };
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     const response = await request(prepareOrdersRequest(params));
     const orders = ResponseTransformer.fromServerResponse(response.data.orders);
     return {

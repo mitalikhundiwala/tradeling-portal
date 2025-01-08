@@ -126,20 +126,10 @@ export default function OrdersTable(props: IProps) {
   }, [pagination, columnFilters]);
 
   useEffect(() => {
-    const filters: Result = reduce(
-      columnFilters,
-      (acc, item) => {
-        acc[item.id] = item.value as string[];
-        return acc;
-      },
-      {} as Result,
-    );
-    if (filters?.["orderStatus"]?.length) {
-      setPagination({
-        ...pagination,
-        pageIndex: 0,
-      });
-    }
+    setPagination({
+      ...pagination,
+      pageIndex: 0,
+    });
   }, [columnFilters]);
 
   const tableData = useMemo(
