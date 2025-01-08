@@ -19,7 +19,7 @@ import { TrendingUp, Users } from "lucide-react";
 import { NavUser } from "./nav-user";
 import Image from "next/image";
 
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 
 import logo from "@/assets/logo.svg";
@@ -51,10 +51,11 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const { lang } = useParams();
   return (
     <Sidebar {...props} className="dark">
       <SidebarHeader className="flex-col h-16 shrink-0 items-center gap-2 border-b px-4">
-        <Link href="/">
+        <Link href={`/${lang}/`}>
           <span className="grow inline-block align-middle">
             <Image
               src={logo.src}
@@ -80,10 +81,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     return (
                       <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild isActive={isActive}>
-                          <a href={item.url}>
+                          <Link href={`/${lang}${item.url}`}>
                             <item.icon />
                             <span>{item.title}</span>
-                          </a>
+                          </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     );

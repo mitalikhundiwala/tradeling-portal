@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { ILoggedInUser, ISession, IToken } from "@/modules/common/models/user";
-import { AuthService } from "@/modules/login/services/auth.service";
+// import { AuthService } from "@/modules/login/services/auth.service";
 
 export const {
   handlers: { GET, POST },
@@ -30,10 +30,22 @@ export const {
       async authorize(credentials): Promise<ILoggedInUser | null> {
         if (credentials === null) return null;
         try {
-          const response = await AuthService.authenticate({
-            username: credentials.username as string,
-            password: credentials.password as string,
-          });
+          // const response = await AuthService.authenticate({
+          //   username: credentials.username as string,
+          //   password: credentials.password as string,
+          // });
+          const response = {
+            id: "233",
+            email: "mitali@example.com",
+            firstName: "Mitali",
+            lastName: "Patel",
+            accessToken: "234324jhb32k4k234knj",
+            refreshToken: "234234234vcvcvdsfwdfdfsf",
+            emailVerified: new Date(),
+            roles: [],
+            permissions: [],
+          };
+
           return response;
         } catch (error) {
           throw new Error(JSON.stringify(error));
