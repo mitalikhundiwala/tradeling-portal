@@ -44,6 +44,11 @@ const data = {
           url: "/users",
           icon: Users,
         },
+        {
+          title: "Roles",
+          url: "/roles",
+          icon: Users,
+        },
       ],
     },
   ],
