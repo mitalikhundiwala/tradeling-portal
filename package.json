@@ -11,6 +11,7 @@
     "lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@formatjs/intl-localematcher": "^0.5.9",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.4",
@@ -36,6 +37,7 @@
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.468.0",
+    "negotiator": "^1.0.0",
     "next": "15.0.4",
     "next-auth": "^5.0.0-beta.25",
     "react": "^19.0.0",
@@ -49,6 +51,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",
+    "@types/negotiator": "^0.6.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
