@@ -69,7 +69,7 @@ export interface IProps {
 export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
   const { currentPage, onPageChange, totalCount, pageSize, onPageSizeChange } =
     props;
-  const totalPages = Math.ceil(totalCount / pageSize);
+  const totalPages = Math.ceil(totalCount / Number(pageSize));
   const pageNumbers = getPageNumbers(currentPage, totalPages);
   return (
     <div className="flex justify-between">
