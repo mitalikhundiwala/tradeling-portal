@@ -11,6 +11,7 @@
     "lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@formatjs/intl-localematcher": "^0.5.9",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.4",
@@ -21,6 +22,7 @@
     "@radix-ui/react-select": "^2.1.4",
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-toast": "^1.2.4",
     "@radix-ui/react-tooltip": "^1.1.6",
     "@tanstack/react-query": "^5.62.10",
     "@tanstack/react-table": "^8.20.6",
@@ -36,12 +38,12 @@
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.468.0",
+    "negotiator": "^1.0.0",
     "next": "15.0.4",
     "next-auth": "^5.0.0-beta.25",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.1",
-    "react-toastify": "^11.0.2",
     "standard-http-error": "^2.0.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
@@ -49,6 +51,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",
+    "@types/negotiator": "^0.6.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -62,7 +65,7 @@
     "typescript": "^5"
   },
   "lint-staged": {
-    "!(*test).(js|ts|jsx|tsx)": [
+    "!(*test|*dictionaries).(js|ts|jsx|tsx)": [
       "prettier --write",
       "eslint src/**/* --fix"
     ]

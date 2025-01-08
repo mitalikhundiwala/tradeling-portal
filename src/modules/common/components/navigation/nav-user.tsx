@@ -36,7 +36,7 @@ export function NavUser() {
 
   const initialLetter = getInitials(
     session.user.firstName,
-    session.user.lastName,
+    session.user.lastName
   );
 
   return (
