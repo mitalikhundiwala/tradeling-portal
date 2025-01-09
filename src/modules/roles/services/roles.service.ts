@@ -23,6 +23,11 @@ export const prepareRoleListRequest = (params: IRetrieveRolesApiParams) => ({
   data: params,
 });
 
+export const prepareRoleDetailRequest = (roleId: number) => ({
+  method: "GET",
+  url: `https://account-management-service-gden.onrender.com/role/${roleId}/info`,
+});
+
 export const preparePermissionsListRequest = () => ({
   method: "GET",
   url: "https://account-management-service-gden.onrender.com/permission/getAllPermissions",
@@ -52,6 +57,20 @@ export default class RolesService {
     const response = await request(preparePermissionsListRequest());
     const permissions: IPermission[] = map(
       response.data.permissionList,
+      (datum) => {
+        return {
+          value: datum.id,
+          label: datum.label,
+        };
+      }
+    );
+    return permissions;
+  }
+
+  static async retrieveRoleDetail(roleId: number): Promise<IPermission[]> {
+    const response = await request(prepareRoleDetailRequest(roleId));
+    const permissions: IPermission[] = map(
+      response.data.permissions,
       (datum) => {
         return {
           value: datum.id,

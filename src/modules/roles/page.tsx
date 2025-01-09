@@ -4,7 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/modules/common/components";
 import { H1 } from "@/modules/common/components/Typography";
-import RoleService, { IRolePage } from "@/modules/roles/services/roles.service";
+import RolesService, {
+  IRolePage,
+} from "@/modules/roles/services/roles.service";
 import { ColumnDef } from "@tanstack/react-table";
 import { IRole } from "@/modules/roles/models/role.model";
 import { Pagination } from "@/modules/common/components/Pagination.component";
@@ -16,6 +18,12 @@ import {
 } from "./components/CreateRoleModal.component";
 import { useToast } from "@/hooks/use-toast";
 import { TableLoading } from "@/modules/common/components/loaders/TableLoader.component";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import ViewPermissions from "./components/view-permissions.component";
 
 export interface IProps {
   initialData: IRolePage | null;
@@ -43,7 +51,7 @@ const RoleListPage: FunctionComponent<IProps> = ({
         limit: pageSize,
         page,
       };
-      return RoleService.retrieveRolesList(params);
+      return RolesService.retrieveRolesList(params);
     },
     initialData,
     staleTime: 1000,
@@ -53,7 +61,7 @@ const RoleListPage: FunctionComponent<IProps> = ({
   const { isLoading: isLoadingPermissions, data: permissions } = useQuery({
     queryKey: ["retrievePermissionsList"],
     queryFn: () => {
-      return RoleService.retrievePermissionsList();
+      return RolesService.retrievePermissionsList();
     },
   });
 
@@ -68,6 +76,20 @@ const RoleListPage: FunctionComponent<IProps> = ({
         header: "Name",
         cell: ({ row: { original } }) => {
           return <div>{`${original.name}`}</div>;
+        },
+      },
+      {
+        accessorKey: "permissions",
+        header: "Permissions",
+        cell: ({ row: { original } }) => {
+          return (
+            <HoverCard key={original.id}>
+              <HoverCardTrigger>View</HoverCardTrigger>
+              <HoverCardContent>
+                <ViewPermissions roleId={original.id} />
+              </HoverCardContent>
+            </HoverCard>
+          );
         },
       },
     ],
@@ -89,7 +111,7 @@ const RoleListPage: FunctionComponent<IProps> = ({
           roleName: name,
           permissionIds: permissions,
         };
-        await RoleService.createNewRole(payload);
+        await RolesService.createNewRole(payload);
         setOpen(false);
         refetch();
         toast({
