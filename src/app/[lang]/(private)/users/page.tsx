@@ -27,7 +27,10 @@ const fetchDataWithDelay = async () => {
 export default async function UsersPage({ searchParams }: UsersPageProps) {
   const { page = "1", limit = "10" } = await searchParams;
   await fetchDataWithDelay();
-  const users = await UserService.retrieveUserList({ page, limit });
+  const users = await UserService.retrieveUserList({
+    page: Number(page),
+    limit: Number(limit),
+  });
   return (
     <div>
       <UserList initialData={users} initialDataUpdatedAt={Date.now()} />

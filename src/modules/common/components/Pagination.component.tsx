@@ -61,9 +61,9 @@ const getPageNumbers = (
 export interface IProps {
   currentPage: number;
   totalCount: number;
-  pageSize: string;
+  pageSize: number;
   onPageChange: (page: number) => void;
-  onPageSizeChange: (pageSize: string) => void;
+  onPageSizeChange: (pageSize: number) => void;
 }
 
 export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
@@ -123,9 +123,9 @@ export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
       </div>
       <div>
         <Select
-          value={pageSize}
+          value={pageSize.toString()}
           onValueChange={(value) => {
-            onPageSizeChange(value);
+            onPageSizeChange(Number(value));
           }}
         >
           <SelectTrigger className="h-8 w-[70px]">

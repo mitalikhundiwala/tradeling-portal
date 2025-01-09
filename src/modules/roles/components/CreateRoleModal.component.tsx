@@ -61,6 +61,10 @@ export const CreateRoleModal: FunctionComponent<IProps> = memo(
       handleNewRoleSubmit(data);
     };
 
+    const _handleReset = () => {
+      form.reset();
+    };
+
     return (
       <Dialog open={isOpen} onOpenChange={handleModalToggle}>
         <DialogContent
@@ -74,36 +78,34 @@ export const CreateRoleModal: FunctionComponent<IProps> = memo(
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(_onSubmit)} className="space-y-4">
-              <div className="grid gap-4 py-4">
+              <div className="grid py-2">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Super Admin" {...field} />
-                      </FormControl>
+                      <FormLabel>Role Name</FormLabel>
                       <FormDescription>
                         Please provide the name of the role
                       </FormDescription>
+                      <FormControl>
+                        <Input placeholder="Super Admin" {...field} />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-              <div className="grid gap-4 py-4">
+              <div className="grid py-2">
                 <FormField
                   control={form.control}
                   name="permissions"
                   render={() => (
                     <FormItem>
-                      <div className="mb-4">
-                        <FormLabel className="text-base">Permissions</FormLabel>
-                        <FormDescription>
-                          Select the permissions for the role.
-                        </FormDescription>
-                      </div>
+                      <FormLabel className="text-base">Permissions</FormLabel>
+                      <FormDescription>
+                        Select the permissions for the role.
+                      </FormDescription>
                       {permissions.map((item) => (
                         <FormField
                           key={item.value}
@@ -145,7 +147,14 @@ export const CreateRoleModal: FunctionComponent<IProps> = memo(
                   )}
                 />
 
-                <div className="text-center">
+                <div className="flex justify-between">
+                  <Button
+                    type="reset"
+                    onClick={_handleReset}
+                    variant="secondary"
+                  >
+                    Reset
+                  </Button>
                   <Button
                     type="submit"
                     isLoading={form.formState.isSubmitting}
