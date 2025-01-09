@@ -8,8 +8,8 @@ export interface IRolePage {
 }
 
 export interface IRetrieveRolesApiParams {
-  page?: string;
-  limit?: string;
+  page?: number;
+  limit?: number;
 }
 
 export interface ICreateRolePayload {

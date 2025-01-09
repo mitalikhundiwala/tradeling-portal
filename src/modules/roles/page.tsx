@@ -1,20 +1,10 @@
-/* eslint-disable */
-
 "use client";
 import { FunctionComponent, useMemo, useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+
 import { Button } from "@/modules/common/components";
 import { H1 } from "@/modules/common/components/Typography";
 import RoleService, { IRolePage } from "@/modules/roles/services/roles.service";
-import { House } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { IRole } from "@/modules/roles/models/role.model";
 import { Pagination } from "@/modules/common/components/Pagination.component";
@@ -26,7 +16,6 @@ import {
 } from "./components/CreateRoleModal.component";
 import { useToast } from "@/hooks/use-toast";
 import { TableLoading } from "@/modules/common/components/loaders/TableLoader.component";
-import { map } from "lodash";
 
 export interface IProps {
   initialData: IRolePage | null;
@@ -42,8 +31,8 @@ const RoleListPage: FunctionComponent<IProps> = ({
   initialData,
   initialDataUpdatedAt,
 }: IProps) => {
-  const [page, setPage] = useState("1");
-  const [pageSize, setPageSize] = useState("10");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [isOpen, setOpen] = useState(false);
   const { toast } = useToast();
 
@@ -89,7 +78,7 @@ const RoleListPage: FunctionComponent<IProps> = ({
     setOpen(isOpen);
   }, []);
 
-  const _handlePageSizeChange = (pageSize: string) => {
+  const _handlePageSizeChange = (pageSize: number) => {
     setPageSize(pageSize);
   };
 
@@ -100,7 +89,6 @@ const RoleListPage: FunctionComponent<IProps> = ({
           roleName: name,
           permissionIds: permissions,
         };
-        console.log("payload::", payload);
         await RoleService.createNewRole(payload);
         setOpen(false);
         refetch();
@@ -131,63 +119,45 @@ const RoleListPage: FunctionComponent<IProps> = ({
   });
 
   return (
-    <div>
-      <Breadcrumb className="py-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">
-              <House size={16} />
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbPage>Roles</BreadcrumbPage>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <div className="bg-white p-4">
-        <div className="flex justify-between">
-          <H1 className="font-bold text-lg">
-            {isLoading ? "Fetching Roles...." : "Roles"}
-          </H1>
-          <div>
-            <Button
-              className="font-bold"
-              onClick={() => {
-                setOpen(true);
-              }}
-            >
-              Create Role
-            </Button>
-          </div>
-        </div>
-        {isFetching ? (
-          <div>
-            <TableLoading />
-          </div>
-        ) : null}
-        {!isFetching && data?.items.length ? (
-          <>
-            <DataTable tableInstance={reactTableInstance} />
-            <div className="pt-10">
-              <Pagination
-                currentPage={parseInt(page as string)}
-                totalCount={data?.totalCount as number}
-                onPageChange={() => {}}
-                onPageSizeChange={_handlePageSizeChange}
-                pageSize={pageSize}
-              />
-            </div>
-          </>
-        ) : null}
-        {!isLoadingPermissions && permissions?.length ? (
-          <CreateRoleModal
-            isOpen={isOpen}
-            permissions={permissions}
-            handleNewRoleSubmit={_handleNewRoleRequest}
-            handleModalToggle={_handleModalToggle}
-          />
-        ) : null}
+    <>
+      <div className="flex justify-between">
+        <H1 className="font-bold text-lg">
+          {isLoading ? "Fetching Roles...." : "Roles"}
+        </H1>
+
+        <Button
+          className="font-bold"
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          Create Role
+        </Button>
       </div>
-    </div>
+      {isFetching ? <TableLoading /> : null}
+      {!isFetching && data?.items.length ? (
+        <>
+          <DataTable tableInstance={reactTableInstance} />
+          <div className="pt-10">
+            <Pagination
+              currentPage={page}
+              totalCount={data?.totalCount as number}
+              onPageChange={() => {}}
+              onPageSizeChange={_handlePageSizeChange}
+              pageSize={pageSize}
+            />
+          </div>
+        </>
+      ) : null}
+      {!isLoadingPermissions && permissions?.length ? (
+        <CreateRoleModal
+          isOpen={isOpen}
+          permissions={permissions}
+          handleNewRoleSubmit={_handleNewRoleRequest}
+          handleModalToggle={_handleModalToggle}
+        />
+      ) : null}
+    </>
   );
 };
 
