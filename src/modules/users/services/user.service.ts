@@ -7,8 +7,8 @@ export interface IUserPage {
 }
 
 export interface IRetrieveUserApiParams {
-  page?: string;
-  limit?: string;
+  page?: number;
+  limit?: number;
 }
 
 export interface ICreateUserPayload {

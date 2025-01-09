@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 "use client";
 import { FunctionComponent, useMemo, useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";

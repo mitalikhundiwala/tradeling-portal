@@ -41,8 +41,8 @@ const UserListPage: FunctionComponent<IProps> = ({
   initialData,
   initialDataUpdatedAt,
 }: IProps) => {
-  const [page, setPage] = useState("1");
-  const [pageSize, setPageSize] = useState("10");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [isOpen, setOpen] = useState(false);
   const { toast } = useToast();
 
@@ -85,7 +85,7 @@ const UserListPage: FunctionComponent<IProps> = ({
     setOpen(isOpen);
   }, []);
 
-  const _handlePageSizeChange = (pageSize: string) => {
+  const _handlePageSizeChange = (pageSize: number) => {
     setPageSize(pageSize);
   };
 
@@ -166,7 +166,7 @@ const UserListPage: FunctionComponent<IProps> = ({
             <DataTable tableInstance={reactTableInstance} />
             <div className="pt-10">
               <Pagination
-                currentPage={parseInt(page as string)}
+                currentPage={page}
                 totalCount={data?.totalCount as number}
                 onPageChange={() => {}}
                 onPageSizeChange={_handlePageSizeChange}

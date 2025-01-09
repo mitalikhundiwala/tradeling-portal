@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function ErrorPage({
@@ -24,7 +23,7 @@ export default function ErrorPage({
             Oops, something went wrong!
           </h1>
           <p className="mt-4 text-muted-foreground">
-            We're sorry, but an unexpected error has occurred. Please try again
+            We&apos;re sorry, but an unexpected error has occurred. Please try again
             later or contact support if the issue persists.
           </p>
           <div className="mt-6">
