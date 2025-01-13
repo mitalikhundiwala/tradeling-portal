@@ -81,12 +81,10 @@ export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
-                href="#"
-                className={
-                  currentPage <= 1
-                    ? "pointer-events-none opacity-50"
-                    : undefined
-                }
+                onClick={() => onPageChange(Number(currentPage - 1))}
+                className={classnames("cursor-pointer", {
+                  "pointer-events-none opacity-50": currentPage <= 1,
+                })}
               />
             </PaginationItem>
             {pageNumbers.map((page, idx) => {
@@ -98,7 +96,7 @@ export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
                     <PaginationLink
                       onClick={() => onPageChange(Number(page))}
                       isActive={page === currentPage}
-                      className={classnames({
+                      className={classnames("cursor-pointer", {
                         "bg-primary text-white": page === currentPage,
                       })}
                     >
@@ -110,12 +108,11 @@ export const Pagination: FunctionComponent<IProps> = (props: IProps) => {
             })}
             <PaginationItem>
               <PaginationNext
-                className={
-                  currentPage >= pageNumbers.length
-                    ? "pointer-events-none opacity-50"
-                    : undefined
-                }
-                href="#"
+                className={classnames("cursor-pointer", {
+                  "pointer-events-none opacity-50":
+                    currentPage >= pageNumbers.length,
+                })}
+                onClick={() => onPageChange(Number(currentPage + 1))}
               />
             </PaginationItem>
           </PaginationContent>

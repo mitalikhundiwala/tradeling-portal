@@ -1,3 +1,5 @@
+"use client";
+
 import { useSearchParams } from "next/navigation";
 import { isNil, omit, omitBy } from "lodash";
 
@@ -24,3 +26,13 @@ const useUpdateSearchParams = () => {
 };
 
 export default useUpdateSearchParams;
+
+export const useCustomSearchParams = <
+  T extends Record<string, string | undefined>,
+>() => {
+  const searchParams = useSearchParams();
+
+  const params = Object.fromEntries(searchParams.entries()) as T;
+
+  return params;
+};
