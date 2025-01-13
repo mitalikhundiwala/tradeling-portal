@@ -58,8 +58,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const { lang } = useParams();
   return (
-    <Sidebar {...props} className="dark">
-      <SidebarHeader className="flex-col h-16 shrink-0 items-center gap-2 border-b px-4">
+    <Sidebar {...props}>
+      <SidebarHeader className="flex-col h-16 shrink-0 items-center gap-2 px-4">
         <Link href={`/${lang}/`}>
           <span className="grow inline-block align-middle">
             <Image
