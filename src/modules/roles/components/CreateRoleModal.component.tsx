@@ -1,6 +1,6 @@
 "use client";
 
-import { FunctionComponent, useEffect, memo } from "react";
+import { FunctionComponent, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { Label, Button } from "@/modules/common/components";
-import { permission } from "process";
+import { Button } from "@/modules/common/components";
 import {
   Form,
   FormControl,
@@ -37,7 +36,7 @@ const newRoleSchema = z.object({
   permissions: z
     .array(z.coerce.string())
     .refine((value) => value.some((item) => item), {
-      message: "You have to select at least one permission."
+      message: "You have to select at least one permission.",
     }),
 });
 
