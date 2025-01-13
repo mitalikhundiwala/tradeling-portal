@@ -14,6 +14,10 @@ export const columns: ColumnDef<IOrder>[] = [
     header: "Business Name",
   },
   {
+    accessorKey: "quantity",
+    header: "Quantity",
+  },
+  {
     accessorKey: "orderDate",
     header: "Order Date",
     cell: ({ row }) => {

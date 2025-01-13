@@ -8,9 +8,10 @@ export class ResponseTransformer {
       return {
         orderNo: datum.orderNo,
         businessName: datum.businessName,
-        orderDate: datum.orderDate,
+        orderDate: datum.date,
+        quantity: datum.quantity,
         orderValue: datum.orderValue,
-        orderStatus: datum.orderStatus,
+        orderStatus: datum.status,
       };
     });
   }

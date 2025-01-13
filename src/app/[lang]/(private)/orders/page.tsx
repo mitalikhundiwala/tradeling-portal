@@ -11,6 +11,7 @@ import {
 import { Locale } from "i18n.config";
 import { Metadata } from "next";
 import { Suspense } from "react";
+import OrdersSkeleton from "@/modules/orders/orders-skeleton";
 
 export const metadata: Metadata = {
   title: "Orders",
@@ -52,7 +53,7 @@ export default async function OrdersPage(props: {
           {intl.ordersTitle}
         </h1>
         <div className="bg-white overflow-hidden">
-          <Suspense fallback={<p>{intl.ordersLoading}</p>}>
+          <Suspense fallback={<OrdersSkeleton pageSize={size} />}>
             <Orders page={currentPage} size={size} statuses={statuses} />
           </Suspense>
         </div>

@@ -1,5 +1,5 @@
 import request from "@/lib/request";
-import { getNextApiUrlFromRoot } from "@/lib/global.config";
+import { getApiUrlFromRoot, getNextApiUrlFromRoot } from "@/lib/global.config";
 import { IOrdersPage } from "../models/order";
 import { ResponseTransformer } from "./response.transformer";
 
@@ -11,8 +11,11 @@ export interface IOrdersRequestParams {
 
 export const prepareOrdersRequest = (data: IOrdersRequestParams) => ({
   method: "GET",
-  url: getNextApiUrlFromRoot("/api/orders"),
-  data,
+  url: "https://order-management-service-zca2.onrender.com/Order/getAllOrdersBySearchCriteria",
+  data: {
+    ...data,
+    status: data.statuses,
+  },
 });
 
 export class OrdersService {
@@ -26,9 +29,11 @@ export class OrdersService {
       limit,
       statuses,
     };
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await request(prepareOrdersRequest(params));
-    const orders = ResponseTransformer.fromServerResponse(response.data.orders);
+    const orders = ResponseTransformer.fromServerResponse(
+      response.data.orderList
+    );
     return {
       orders,
       total: response.data.totalCount,
