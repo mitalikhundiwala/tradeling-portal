@@ -18,7 +18,7 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { isEmpty, reduce } from "lodash";
+import { isEmpty, reduce, size } from "lodash";
 import useUpdateSearchParams from "@/hooks/use-search-params";
 
 interface IProps {
@@ -44,7 +44,7 @@ export default function OrdersTable(props: IProps) {
   const setSearchParams = useUpdateSearchParams();
 
   const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: props.page - 1,
+    pageIndex: props.page ? props.page - 1 : 0,
     pageSize: props.size,
   });
 
@@ -80,11 +80,11 @@ export default function OrdersTable(props: IProps) {
           acc[item.id] = item.value as string[];
           return acc;
         },
-        {} as Result,
+        {} as Result
       );
       const statuses = filters?.["orderStatus"];
       return OrdersService.retrieveOrders({
-        page: pagination.pageIndex,
+        page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
         statuses: statuses ? statuses.join(",") : null,
       });
@@ -112,7 +112,7 @@ export default function OrdersTable(props: IProps) {
         acc[item.id] = item.value as string[];
         return acc;
       },
-      {} as Result,
+      {} as Result
     );
     if (!isEmpty(filters)) {
       if (filters["orderStatus"]?.length) {
@@ -134,7 +134,7 @@ export default function OrdersTable(props: IProps) {
 
   const tableData = useMemo(
     () => (isFetching ? Array(pagination.pageSize).fill({}) : data.orders),
-    [isFetching, data],
+    [isFetching, data]
   );
 
   const tableColumns = useMemo(
@@ -145,7 +145,7 @@ export default function OrdersTable(props: IProps) {
             cell: () => <Skeleton className="h-5 w-full bg-gray-300" />,
           }))
         : columns,
-    [isFetching],
+    [isFetching]
   );
 
   const table = useReactTable({
@@ -159,7 +159,7 @@ export default function OrdersTable(props: IProps) {
     onPaginationChange: setPagination,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    pageCount: data.total,
+    rowCount: data.total,
     manualPagination: true,
     manualFiltering: true,
     getCoreRowModel: getCoreRowModel(),

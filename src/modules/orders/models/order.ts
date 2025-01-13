@@ -2,6 +2,7 @@ export interface IOrder {
   orderNo: string;
   businessName: string;
   orderDate: Date;
+  quantity: number;
   orderValue: number;
   orderStatus: string;
 }
