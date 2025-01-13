@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, use } from "react";
 import { AppSidebar } from "@/modules/common/components/navigation/app-sidebar";
 
 import {
@@ -27,10 +27,12 @@ const AuthLayout: React.FC<RootLayoutProps> = ({ children }) => {
         <header className="flex justify-between h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <div className="flex">
-            <div className="flex mr-2">
+            <div className="flex ltr:mr-2">
               <LocaleSwitcher />
             </div>
-            <DropdownMenuComponent />
+            <div className="rtl:mr-2">
+              <DropdownMenuComponent />
+            </div>
           </div>
         </header>
         <main className="flex-1 px-6 bg-gray-100">{children}</main>

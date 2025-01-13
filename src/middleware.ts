@@ -10,6 +10,7 @@ const locales = ["en", "ar"];
 
 function getLocale(request: NextRequest) {
   const acceptedLanguage = request.headers.get("accept-language") ?? undefined;
+  console.log('acceptedLanguage::', acceptedLanguage);
   const headers = { "accept-language": acceptedLanguage };
   const languages = new Negotiator({ headers }).languages();
 
