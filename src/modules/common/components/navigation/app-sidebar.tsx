@@ -23,44 +23,51 @@ import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 
 import logo from "@/assets/logo.svg";
+import { useTranslation } from "react-i18next";
 
-const data = {
-  navMain: [
-    {
-      title: "Order Management",
-      items: [
-        {
-          title: "Orders",
-          url: "/orders",
-          icon: TrendingUp,
-        },
-      ],
-    },
-    {
-      title: "User Management",
-      items: [
-        {
-          title: "Users",
-          url: "/users",
-          icon: Users,
-        },
-        {
-          title: "Roles",
-          url: "/roles",
-          icon: Users,
-        },
-      ],
-    },
-  ],
+type Props = {
+  locale: string;
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar> & Props) {
   const pathname = usePathname();
-  const { lang } = useParams();
+  const { t } = useTranslation();
+
+  const data = {
+    navMain: [
+      {
+        title: t("menu_orders_header"),
+        items: [
+          {
+            title: t("menu_orders_subheader"),
+            url: "/orders",
+            icon: TrendingUp,
+          },
+        ],
+      },
+      {
+        title: t("menu_users_header"),
+        items: [
+          {
+            title: t("menu_users_subheader"),
+            url: "/users",
+            icon: Users,
+          },
+          {
+            title: t("menu_roles_subheader"),
+            url: "/roles",
+            icon: Users,
+          },
+        ],
+      },
+    ],
+  };
   return (
-    <Sidebar {...props}>
+    <Sidebar {...props} side={props.locale === "ar" ? "right" : "left"}>
       <SidebarHeader className="flex-col h-16 shrink-0 items-center gap-2 px-4">
-        <Link href={`/${lang}/`}>
+        <Link href="/">
           <span className="grow inline-block align-middle">
             <Image
               src={logo.src}
@@ -86,7 +93,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     return (
                       <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild isActive={isActive}>
-                          <Link href={`/${lang}${item.url}`}>
+                          <Link href={`${item.url}`}>
                             <item.icon />
                             <span>{item.title}</span>
                           </Link>

@@ -30,15 +30,15 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { lang: string };
+  params: { locale: string };
 }>) {
   const urlParams = await params;
-  const lang = urlParams.lang;
-  const direction = lang === "ar" ? "rtl" : "ltr";
-  console.log("lang::", lang);
+  const locale = urlParams.locale;
+  const direction = locale === "ar" ? "rtl" : "ltr";
+  console.log("locale::", locale);
   return (
-    <html lang={lang} dir={direction}>
-      <body className={` antialiased bg-gray-100`}>
+    <html lang={locale} dir={direction}>
+      <body className="antialiased bg-gray-100">
         <SessionProvider>
           <AuthWrapper>
             <QueryProvider>

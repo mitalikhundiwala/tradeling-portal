@@ -1,67 +1,36 @@
-import { match } from "@formatjs/intl-localematcher";
-import Negotiator from "negotiator";
-
 import { NextResponse, NextRequest } from "next/server";
 import { PUBLIC_ROUTES, LOGIN, ORDERS } from "@/lib/routes";
 import { auth } from "@/auth";
 
-const defaultLocale = "en";
-const locales = ["en", "ar"];
-
-function getLocale(request: NextRequest) {
-  const acceptedLanguage = request.headers.get("accept-language") ?? undefined;
-  console.log('acceptedLanguage::', acceptedLanguage);
-  const headers = { "accept-language": acceptedLanguage };
-  const languages = new Negotiator({ headers }).languages();
-
-  return match(languages, locales, defaultLocale); // -> 'en-US'
-}
+import { i18nRouter } from "next-i18n-router";
+import i18nConfig from "./i18nConfig";
 
 export async function middleware(request: NextRequest) {
   const { nextUrl } = request;
   const session = await auth();
-  const pathname = request.nextUrl.pathname;
 
   const isAuthenticated = !!session?.user;
   const isPublicRoute = !!PUBLIC_ROUTES.find((route) =>
     nextUrl.pathname.startsWith(route)
   );
-
-  if (!isAuthenticated && !isPublicRoute) {
-    if (nextUrl.pathname !== LOGIN) {
-      return NextResponse.redirect(new URL(LOGIN, nextUrl));
-    }
+  const locale = i18nConfig.getLocale(request);
+  if (
+    !isAuthenticated &&
+    !isPublicRoute &&
+    nextUrl.pathname !== LOGIN &&
+    nextUrl.pathname !== `/${locale}${LOGIN}`
+  ) {
+    nextUrl.pathname = `/${locale}${LOGIN}`;
+    return NextResponse.redirect(new URL(nextUrl.pathname, request.url));
   }
 
-  if (isAuthenticated && pathname === "/") {
-    const locale = getLocale(request); // Detect preferred locale (en or ar)
-    return NextResponse.redirect(new URL(`/${locale}`, request.url)); // Redirect to /en or /ar
-  }
+  // if (isAuthenticated && isPublicRoute) {
+  //   return NextResponse.redirect(new URL(ORDERS, nextUrl));
+  // }
 
-  if (isAuthenticated && isPublicRoute) {
-    const pathnameIsMissingLocale = locales.every(
-      (locale) =>
-        !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-    );
+  // return NextResponse.next();
 
-    // Redirect if there is no locale
-    if (pathnameIsMissingLocale) {
-      const locale = getLocale(request);
-
-      // e.g. incoming request is /products
-      // The new URL is now /en-US/products
-      return NextResponse.redirect(
-        new URL(`/${locale}/${pathname}`, request.url)
-      );
-    }
-
-    // Redirect if there is no locale
-    const locale = getLocale(request);
-    nextUrl.pathname = `/${locale}${pathname}`;
-    return NextResponse.redirect(new URL(ORDERS, nextUrl));
-  }
-
-  return NextResponse.next();
+  return i18nRouter(request, i18nConfig);
 }
 
 export const config = {
