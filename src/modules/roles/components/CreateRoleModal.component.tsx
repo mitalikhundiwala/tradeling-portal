@@ -55,13 +55,13 @@ export const CreateRoleModal: FunctionComponent<IProps> = ({
       permissions: undefined,
     },
   });
-  console.log(form.formState.errors);
+
   useEffect(() => {
     form.reset();
   }, []);
 
   const _onSubmit = async (data: newRoleSchemaTypes) => {
-    handleNewRoleSubmit(data);
+    return handleNewRoleSubmit(data);
   };
 
   const _handleReset = () => {
@@ -131,8 +131,8 @@ export const CreateRoleModal: FunctionComponent<IProps> = ({
                                         ])
                                       : field.onChange(
                                           field.value?.filter(
-                                            (value) => value !== item.value
-                                          )
+                                            (value) => value !== item.value,
+                                          ),
                                         );
                                   }}
                                 />
