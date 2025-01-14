@@ -25,17 +25,19 @@ export const metadata: Metadata = {
     "Tradeling, the largest B2B digital marketplace in the MENA region",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-  params: { lang },
+  params,
 }: Readonly<{
   children: React.ReactNode;
   params: { lang: string };
 }>) {
+  const urlParams = await params;
+  const lang = urlParams.lang;
   const direction = lang === "ar" ? "rtl" : "ltr";
   console.log("lang::", lang);
   return (
-    <html lang="en" dir={direction}>
+    <html lang={lang} dir={direction}>
       <body className={` antialiased bg-gray-100`}>
         <SessionProvider>
           <AuthWrapper>
