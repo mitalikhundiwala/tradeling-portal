@@ -25,11 +25,11 @@ const fetchDataWithDelay = async () => {
 };
 
 export default async function UsersPage({ searchParams }: UsersPageProps) {
-  const { page = "1", limit = "10" } = await searchParams;
+  const { page = "1", pageSize = "10" } = await searchParams;
   await fetchDataWithDelay();
   const users = await UserService.retrieveUserList({
     page: Number(page),
-    limit: Number(limit),
+    limit: Number(pageSize),
   });
   return (
     <div>

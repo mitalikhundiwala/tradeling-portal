@@ -26,32 +26,35 @@ import {
 } from "./components/CreateUserModal.component";
 import { useToast } from "@/hooks/use-toast";
 import { TableLoading } from "@/modules/common/components/loaders/TableLoader.component";
+import useUpdateSearchParams, {
+  useCustomSearchParams,
+} from "@/hooks/use-search-params";
 
 export interface IProps {
   initialData: IUserPage | null;
   initialDataUpdatedAt: number;
 }
 
-export interface IQueryParams {
+export type IQueryParams = {
   page?: string;
-  limit?: string;
-}
+  pageSize?: string;
+};
 
 const UserListPage: FunctionComponent<IProps> = ({
   initialData,
   initialDataUpdatedAt,
 }: IProps) => {
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [isOpen, setOpen] = useState(false);
   const { toast } = useToast();
+  const setSearchParams = useUpdateSearchParams();
+  const { pageSize = "10", page = "1" } = useCustomSearchParams<IQueryParams>();
 
   const { isLoading, error, data, refetch, isFetching } = useQuery({
     queryKey: ["retrieveUserPage", page, pageSize],
     queryFn: () => {
       const params = {
-        limit: pageSize,
-        page,
+        limit: parseInt(pageSize),
+        page: parseInt(page),
       };
       return UserService.retrieveUserList(params);
     },
@@ -86,7 +89,16 @@ const UserListPage: FunctionComponent<IProps> = ({
   }, []);
 
   const _handlePageSizeChange = (pageSize: number) => {
-    setPageSize(pageSize);
+    setSearchParams({
+      page: 1,
+      pageSize,
+    });
+  };
+
+  const _handlePageChange = (page: number) => {
+    setSearchParams({
+      page,
+    });
   };
 
   const _handleNewUserRequest = useCallback(
@@ -166,11 +178,11 @@ const UserListPage: FunctionComponent<IProps> = ({
             <DataTable tableInstance={reactTableInstance} />
             <div className="pt-10">
               <Pagination
-                currentPage={page}
+                currentPage={parseInt(page)}
                 totalCount={data?.totalCount as number}
-                onPageChange={() => {}}
+                onPageChange={_handlePageChange}
                 onPageSizeChange={_handlePageSizeChange}
-                pageSize={pageSize}
+                pageSize={parseInt(pageSize)}
               />
             </div>
           </>
