@@ -45,10 +45,10 @@ export const CreateUserModal: FunctionComponent<IProps> = memo(
 
     useEffect(() => {
       reset();
-    }, []);
+    }, [isOpen]);
 
     const _onSubmit = async (data: newUserSchemaTypes) => {
-      handleNewUserSubmit(data);
+      return handleNewUserSubmit(data);
     };
 
     return (
@@ -62,7 +62,11 @@ export const CreateUserModal: FunctionComponent<IProps> = memo(
           <DialogHeader>
             <DialogTitle className="text-center">Create User</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit(_onSubmit)} className="space-y-4">
+          <form
+            onSubmit={handleSubmit(_onSubmit)}
+            className="space-y-4"
+            autoComplete="off"
+          >
             <div className="grid gap-4 py-4">
               <div>
                 <div className="pb-1">
