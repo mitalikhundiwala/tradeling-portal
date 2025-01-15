@@ -7,26 +7,26 @@ import { IOrder } from "./models/order";
 export const columns: ColumnDef<IOrder>[] = [
   {
     accessorKey: "orderNo",
-    header: "Order No",
+    header: () => <div className="rtl:text-right">Order No</div>,
   },
   {
     accessorKey: "businessName",
-    header: "Business Name",
+    header: () => <div className="rtl:text-right">Business Name</div>,
   },
   {
     accessorKey: "quantity",
-    header: "Quantity",
+    header: () => <div className="rtl:text-right">Quantity</div>,
   },
   {
     accessorKey: "orderDate",
-    header: "Order Date",
+    header: () => <div className="rtl:text-right">Order Date</div>,
     cell: ({ row }) => {
       return <FormattedDate date={row.getValue("orderDate")} />;
     },
   },
   {
     accessorKey: "orderValue",
-    header: () => <div className="text-right">Order Value</div>,
+    header: () => <div className="text-right rtl:text-left">Order Value</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("orderValue"));
       const formatted = new Intl.NumberFormat("en-US", {
@@ -39,7 +39,7 @@ export const columns: ColumnDef<IOrder>[] = [
   },
   {
     accessorKey: "orderStatus",
-    header: "Order Status",
+    header: () => <div className="rtl:text-right">Order Status</div>,
     meta: {
       filterKey: "orderStatus",
     },
