@@ -1,5 +1,4 @@
-import request from "@/lib/request";
-import { getApiUrlFromRoot, getNextApiUrlFromRoot } from "@/lib/global.config";
+import request from "@/app/actions/request";
 import { IOrdersPage } from "../models/order";
 import { ResponseTransformer } from "./response.transformer";
 
@@ -32,7 +31,7 @@ export class OrdersService {
     // await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await request(prepareOrdersRequest(params));
     const orders = ResponseTransformer.fromServerResponse(
-      response.data.orderList
+      response.data.orderList,
     );
     return {
       orders,

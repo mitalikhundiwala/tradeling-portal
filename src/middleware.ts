@@ -1,9 +1,9 @@
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
-
 import { NextResponse, NextRequest } from "next/server";
 import { PUBLIC_ROUTES, LOGIN, ORDERS } from "@/lib/routes";
-import { auth } from "@/auth";
+import { cookies } from "next/headers";
+import { TL_AUTH_TOKEN } from "@/constant";
 
 const defaultLocale = "en";
 const locales = ["en", "ar"];
@@ -18,12 +18,12 @@ function getLocale(request: NextRequest) {
 
 export async function middleware(request: NextRequest) {
   const { nextUrl } = request;
-  const session = await auth();
+  const cookieStore = await cookies();
   const pathname = request.nextUrl.pathname;
+  const isAuthenticated = !!cookieStore.get(TL_AUTH_TOKEN)?.value;
 
-  const isAuthenticated = !!session?.user;
   const isPublicRoute = !!PUBLIC_ROUTES.find((route) =>
-    nextUrl.pathname.startsWith(route)
+    nextUrl.pathname.startsWith(route),
   );
 
   if (!isAuthenticated && !isPublicRoute) {
@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
   if (isAuthenticated && isPublicRoute) {
     const pathnameIsMissingLocale = locales.every(
       (locale) =>
-        !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+        !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`,
     );
 
     // Redirect if there is no locale
@@ -50,7 +50,7 @@ export async function middleware(request: NextRequest) {
       // e.g. incoming request is /products
       // The new URL is now /en-US/products
       return NextResponse.redirect(
-        new URL(`/${locale}/${pathname}`, request.url)
+        new URL(`/${locale}/${pathname}`, request.url),
       );
     }
 

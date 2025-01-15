@@ -4,7 +4,7 @@ import axios, {
   ResponseType,
   AxiosResponse,
 } from "axios";
-import { TradelingHttpErrorClass } from "@/lib/http-error";
+import { HttpErrorClass } from "@/lib/http-error";
 import { getHeaders } from "@/lib/global.config";
 
 interface IErrorResponse {
@@ -60,7 +60,7 @@ axios.interceptors.response.use(
 export const throwHttpError = (error: AxiosError<IErrorResponse>) => {
   const statusCode: number = error.response?.data?.statusCode ?? -1;
   const message: string = error.response?.data?.message ?? "";
-  const httpError = new TradelingHttpErrorClass(statusCode, message);
+  const httpError = new HttpErrorClass(statusCode, message);
   throw httpError;
 };
 

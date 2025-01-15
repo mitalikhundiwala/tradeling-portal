@@ -7,12 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { doCredentialLogin } from "@/app/actions";
 import { ORDERS } from "@/lib/routes";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import { login } from "@/app/actions/auth";
 
-// Define schema using Zod
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
@@ -29,24 +29,26 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
+  const { toast } = useToast();
   const router = useRouter();
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      await doCredentialLogin({
-        redirect: false,
-        username: data.username,
-        password: data.password,
+      const res = await login({
+        email: data.username,
+        password: btoa(data.password),
       });
+
       router.push(ORDERS);
+      return res;
     } catch (e) {
       const errorMessage =
         e instanceof Error ? e.message : "An unknown error occurred";
-      console.log("login error", errorMessage);
-      // showToast({
-      //   title: errorMessage,
-      //   type: NOTIFICATION_TYPE.ERROR,
-      // });
+      toast({
+        variant: "destructive",
+        title: errorMessage,
+        description: "Login failed",
+      });
     }
   };
 

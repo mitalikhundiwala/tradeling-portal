@@ -4,7 +4,7 @@ export interface ITradelingHttpErrorProps {
   statusCode: number;
 }
 
-export class TradelingHttpErrorClass extends HttpError {
+export class HttpErrorClass extends HttpError {
   getStatusCode(): number {
     return this.errorCode;
   }
@@ -14,4 +14,4 @@ export class TradelingHttpErrorClass extends HttpError {
   }
 }
 
-export default TradelingHttpErrorClass;
+export default HttpErrorClass;

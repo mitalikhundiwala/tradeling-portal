@@ -1,4 +1,4 @@
-import request from "@/lib/request";
+import request from "@/app/actions/request";
 import { IPermission, IRole } from "../models/role.model";
 import { map } from "lodash";
 
@@ -44,7 +44,7 @@ export const prepareAddNewRoleRequest = (payload: ICreateRolePayload) => ({
 
 export default class RolesService {
   static async retrieveRolesList(
-    params: IRetrieveRolesApiParams
+    params: IRetrieveRolesApiParams,
   ): Promise<IRolePage> {
     const response = await request(prepareRoleListRequest(params));
     return {
@@ -62,7 +62,7 @@ export default class RolesService {
           value: datum.id,
           label: datum.label,
         };
-      }
+      },
     );
     return permissions;
   }
@@ -76,7 +76,7 @@ export default class RolesService {
           value: datum.id,
           label: datum.label,
         };
-      }
+      },
     );
     return permissions;
   }

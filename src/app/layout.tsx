@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { AuthWrapper } from "@/modules/common/authorization/AuthWrapper";
-import { SessionProvider } from "next-auth/react";
 import QueryProvider from "@/providers/QueryProvider";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -34,12 +33,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
       >
-        <SessionProvider>
-          <AuthWrapper>
-            <QueryProvider>{children}</QueryProvider>
-          </AuthWrapper>
-          <Toaster />
-        </SessionProvider>
+        <AuthWrapper>
+          <QueryProvider>{children}</QueryProvider>
+        </AuthWrapper>
+        <Toaster />
       </body>
     </html>
   );
