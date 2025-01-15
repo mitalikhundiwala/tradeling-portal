@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { PUBLIC_ROUTES, LOGIN, ORDERS } from "@/lib/routes";
+import { PUBLIC_ROUTES, LOGIN } from "@/lib/routes";
 import { auth } from "@/auth";
 
 import { i18nRouter } from "next-i18n-router";

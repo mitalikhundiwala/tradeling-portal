@@ -1,16 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import i18nConfig from "@/i18nConfig";
-import { Globe } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useTranslation } from "react-i18next";
 
 type Props = {
   locale: string;
@@ -50,33 +42,8 @@ export default function LocaleSwitcher(props: Props) {
           handleClick(currentLocale === "en" ? "ar" : "en");
         }}
       >
-        <Globe size="20" />
         {currentLocale === "en" ? "العربية" : "English"}
       </Button>
     </div>
-    // <DropdownMenu>
-    //   <DropdownMenuTrigger>
-    //     <div className="flex items-center">
-    //       <Globe size="20" />
-    //       <span className="pl-2">
-    //         {currentLocale === "en" ? "العربية" : "English"}
-    //       </span>
-    //     </div>
-    //   </DropdownMenuTrigger>
-    //   <DropdownMenuContent>
-    //     {i18nConfig.locales.map((locale) => {
-    //       return (
-    //         <DropdownMenuItem
-    //           key={locale}
-    //           onClick={() => {
-    //             handleClick(locale);
-    //           }}
-    //         >
-    //           {locale === "en" ? "English" : "العربية"}
-    //         </DropdownMenuItem>
-    //       );
-    //     })}
-    //   </DropdownMenuContent>
-    // </DropdownMenu>
   );
 }

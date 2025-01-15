@@ -26,7 +26,7 @@ export default function DropdownMenuComponent() {
       <DropdownMenuTrigger>
         <div className="flex items-center">
           {session?.user?.firstName} {session?.user?.lastName}
-          <div className="pl-2">
+          <div className="ltr:pl-2 rtl:pr-2">
             <CircleUserRound />
           </div>
         </div>

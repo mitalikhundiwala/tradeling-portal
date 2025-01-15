@@ -8,16 +8,16 @@ import { Toaster } from "@/components/ui/toaster";
 import "../globals.css";
 import DirectionProvider from "@/providers/DirectionProvider";
 
-// const geistSans = localFont({
-//   src: "../fonts/GeistVF.woff",
-//   variable: "--font-geist-sans",
-//   weight: "100 900",
-// });
-// const geistMono = localFont({
-//   src: "../fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
+const geistSans = localFont({
+  src: "../fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "../fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
 
 export const metadata: Metadata = {
   title: "Tradeling Portal",
@@ -35,10 +35,11 @@ export default async function RootLayout({
   const urlParams = await params;
   const locale = urlParams.locale;
   const direction = locale === "ar" ? "rtl" : "ltr";
-  console.log("locale::", locale);
   return (
     <html lang={locale} dir={direction}>
-      <body className="antialiased bg-gray-100">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
+      >
         <SessionProvider>
           <AuthWrapper>
             <QueryProvider>

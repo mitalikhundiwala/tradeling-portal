@@ -1,5 +1,4 @@
 import request from "@/lib/request";
-import { getApiUrlFromRoot, getNextApiUrlFromRoot } from "@/lib/global.config";
 import { IOrdersPage } from "../models/order";
 import { ResponseTransformer } from "./response.transformer";
 

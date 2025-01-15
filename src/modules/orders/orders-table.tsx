@@ -18,7 +18,7 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { isEmpty, reduce, size } from "lodash";
+import { isEmpty, reduce } from "lodash";
 import useUpdateSearchParams from "@/hooks/use-search-params";
 import { useTranslation } from "react-i18next";
 

@@ -19,7 +19,7 @@ import { TrendingUp, Users } from "lucide-react";
 import { NavUser } from "./nav-user";
 import Image from "next/image";
 
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 import logo from "@/assets/logo.svg";

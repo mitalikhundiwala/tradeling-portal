@@ -1,4 +1,4 @@
-import React, { ReactNode, use } from "react";
+import React, { ReactNode } from "react";
 import { AppSidebar } from "@/modules/common/components/navigation/app-sidebar";
 
 import {
@@ -24,11 +24,9 @@ interface RootLayoutProps {
 
 const i18nNamespaces = ["sidebar"];
 
-const AuthLayout: React.FC<RootLayoutProps> = async ({
-  children,
-  params: { locale },
-}) => {
-  const { t, resources } = await initTranslations(locale, ["sidebar"]);
+const AuthLayout: React.FC<RootLayoutProps> = async ({ children, params }) => {
+  const locale = await params.locale;
+  const { resources } = await initTranslations(locale, ["sidebar"]);
 
   return (
     <TranslationsProvider
@@ -41,7 +39,7 @@ const AuthLayout: React.FC<RootLayoutProps> = async ({
         <SidebarInset>
           <header className="flex justify-between h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />
-            <div className="flex">
+            <div className="flex items-center">
               <div className="flex ltr:mr-2">
                 <LocaleSwitcher locale={locale} />
               </div>
