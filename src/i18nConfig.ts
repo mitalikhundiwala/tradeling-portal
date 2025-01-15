@@ -10,7 +10,7 @@ function convertLocale(headerValue: string | null) {
 const i18nConfig = {
   locales: ["en", "ar"],
   defaultLocale: "en",
-  prefixDefault: true,
+  prefixDefault: false,
   getLocale(request: NextRequest) {
     const headerValue = request.headers.get("accept-language");
     return convertLocale(headerValue);

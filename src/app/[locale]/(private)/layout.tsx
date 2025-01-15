@@ -25,7 +25,7 @@ interface RootLayoutProps {
 const i18nNamespaces = ["sidebar"];
 
 const AuthLayout: React.FC<RootLayoutProps> = async ({ children, params }) => {
-  const locale = await params.locale;
+  const { locale } = await params;
   const { resources } = await initTranslations(locale, ["sidebar"]);
 
   return (
