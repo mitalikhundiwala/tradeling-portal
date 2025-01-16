@@ -43,7 +43,7 @@ export function AppSidebar({
     navMain: [
       {
         title: t("menu_orders_header"),
-        icon: <TrendingUp />,
+        icon: <TrendingUp size={20} />,
         items: [
           {
             title: t("menu_orders_subheader"),
@@ -53,7 +53,7 @@ export function AppSidebar({
       },
       {
         title: t("menu_users_header"),
-        icon: <Users size={24} />,
+        icon: <Users size={20} />,
         items: [
           {
             title: t("menu_users_subheader"),
@@ -82,18 +82,30 @@ export function AppSidebar({
           </span>
         </Link>
       </SidebarHeader>
-      <SidebarContent className="mt-10 w-[90%]">
+      <SidebarContent className="mt-10 gap-0">
         {data.navMain.map((item) => {
+          const isGroupActive = item.items.some(
+            (item) => pathname === item.url,
+          );
+
           return (
-            <Collapsible className="group/collapsible" key={item.title}>
-              <SidebarGroup className="p-0">
-                <SidebarGroupLabel className="text-sm font-bold">
+            <Collapsible
+              className="group/collapsible"
+              key={item.title}
+              defaultOpen={isGroupActive}
+            >
+              <SidebarGroup className="p-0 border-b border-b-gray-700 text-md">
+                <SidebarGroupLabel
+                  className={classNames("text-sm font-bold h-10 pt-0", {
+                    "bg-white rounded-none text-black": isGroupActive, // Add active class
+                  })}
+                >
                   <CollapsibleTrigger className="flex [&[data-state=open]>div>div>svg]:rotate-180 mb-1 w-full">
                     <div className="flex w-full">
                       <span className="mr-4">{item.icon}</span>
                       <p className="flex items-center">{item.title}</p>
                       <div
-                        className="ml-4 flex items-center"
+                        className="ml-4 flex items-center flex-1 justify-end"
                         // className={cn(
                         //   "whitespace-nowrap",
                         //   isOpen
@@ -110,8 +122,8 @@ export function AppSidebar({
                   </CollapsibleTrigger>
                 </SidebarGroupLabel>
                 <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-                  <SidebarGroupContent className="pl-2">
-                    <SidebarMenu className="ml-4 border-l border-gray-600 pl-2">
+                  <SidebarGroupContent className="pl-2 py-2">
+                    <SidebarMenu className="ml-[09px] border-l border-gray-600 pl-6">
                       {item.items.map((item) => {
                         const isActive = pathname === item.url;
                         return (
@@ -119,10 +131,13 @@ export function AppSidebar({
                             <SidebarMenuButton
                               asChild
                               className={classNames({
-                                "font-bold": isActive,
+                                "font-bold underline text-orange-500": isActive,
                               })}
                             >
-                              <Link href={`${item.url}`}>
+                              <Link
+                                href={`${item.url}`}
+                                className="hover:bg-transparent hover:text-orange-500 active:bg-transparent active:text-inherit"
+                              >
                                 <span>{item.title}</span>
                               </Link>
                             </SidebarMenuButton>
