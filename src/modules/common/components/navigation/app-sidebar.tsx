@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -15,10 +14,14 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { TrendingUp, Users } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { TrendingUp, Users, ChevronDown } from "lucide-react";
 import { NavUser } from "./nav-user";
 import Image from "next/image";
-
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -39,34 +42,37 @@ export function AppSidebar({
     navMain: [
       {
         title: t("menu_orders_header"),
+        icon: <TrendingUp />,
         items: [
           {
             title: t("menu_orders_subheader"),
             url: "/orders",
-            icon: TrendingUp,
           },
         ],
       },
       {
         title: t("menu_users_header"),
+        icon: <Users size={24} />,
         items: [
           {
             title: t("menu_users_subheader"),
             url: "/users",
-            icon: Users,
           },
           {
             title: t("menu_roles_subheader"),
             url: "/roles",
-            icon: Users,
           },
         ],
       },
     ],
   };
   return (
-    <Sidebar {...props} side={props.locale === "ar" ? "right" : "left"}>
-      <SidebarHeader className="flex-col h-16 shrink-0 items-center gap-2 px-4">
+    <Sidebar
+      {...props}
+      side={props.locale === "ar" ? "right" : "left"}
+      collapsible="icon"
+    >
+      <SidebarHeader className="flex-col h-16 shrink-0 items-center  px-4">
         <Link href="/">
           <span className="grow inline-block align-middle">
             <Image
@@ -79,31 +85,53 @@ export function AppSidebar({
           </span>
         </Link>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="mt-10">
         {data.navMain.map((item) => {
           return (
-            <SidebarGroup key={item.title}>
-              <SidebarGroupLabel className="text-sm font-bold">
-                {item.title}
-              </SidebarGroupLabel>
-              <SidebarGroupContent className="pl-2">
-                <SidebarMenu>
-                  {item.items.map((item) => {
-                    const isActive = pathname === item.url;
-                    return (
-                      <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={isActive}>
-                          <Link href={`${item.url}`}>
-                            <item.icon />
-                            <span>{item.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    );
-                  })}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
+            <Collapsible className="group/collapsible" key={item.title}>
+              <SidebarGroup className="p-0">
+                <SidebarGroupLabel className="text-sm font-bold">
+                  <CollapsibleTrigger className="flex [&[data-state=open]>div>div>svg]:rotate-180 mb-1">
+                    <div className="flex w-full ali">
+                      <span className="mr-4">{item.icon}</span>
+                      <p className="flex items-center">{item.title}</p>
+                      <div
+                        className="ml-4 flex items-center"
+                        // className={cn(
+                        //   "whitespace-nowrap",
+                        //   isOpen
+                        //     ? "translate-x-0 opacity-100"
+                        //     : "-translate-x-96 opacity-0"
+                        // )}
+                      >
+                        <ChevronDown
+                          size={18}
+                          className="transition-transform duration-200"
+                        />
+                      </div>
+                    </div>
+                  </CollapsibleTrigger>
+                </SidebarGroupLabel>
+                <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+                  <SidebarGroupContent className="pl-2">
+                    <SidebarMenu>
+                      {item.items.map((item) => {
+                        const isActive = pathname === item.url;
+                        return (
+                          <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton asChild isActive={isActive}>
+                              <Link href={`${item.url}`}>
+                                <span>{item.title}</span>
+                              </Link>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        );
+                      })}
+                    </SidebarMenu>
+                  </SidebarGroupContent>
+                </CollapsibleContent>
+              </SidebarGroup>
+            </Collapsible>
           );
         })}
       </SidebarContent>
