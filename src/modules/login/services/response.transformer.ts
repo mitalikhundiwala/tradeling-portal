@@ -15,7 +15,6 @@ export class ResponseTransformer {
       refreshToken,
       permissions: [],
       roles: [],
-      emailVerified: null,
     };
   }
 }

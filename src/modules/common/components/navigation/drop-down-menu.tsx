@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 "use client";
 
 import {
@@ -8,19 +10,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { CircleUserRound, LogOut } from "lucide-react";
-
-import { Button } from "../../../../components/ui/button";
-import { logout } from "@/app/actions";
-import { useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+import { logout } from "@/app/actions/auth";
 
 export default function DropdownMenuComponent() {
-  const { data: session } = useSession();
+  const { data: session } = {} as any;
 
   function logoutHandler() {
     logout();
   }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>

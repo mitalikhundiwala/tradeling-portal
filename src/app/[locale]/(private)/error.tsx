@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { startTransition, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function ErrorPage({
   error,
@@ -10,6 +11,13 @@ export default function ErrorPage({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
+  const reload = () => {
+    startTransition(() => {
+      router.refresh();
+      reset();
+    });
+  };
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);
@@ -23,14 +31,14 @@ export default function ErrorPage({
             Oops, something went wrong!
           </h1>
           <p className="mt-4 text-muted-foreground">
-            We&apos;re sorry, but an unexpected error has occurred. Please try again
-            later or contact support if the issue persists.
+            We&apos;re sorry, but an unexpected error has occurred. Please try
+            again later or contact support if the issue persists.
           </p>
           <div className="mt-6">
             <Button
               onClick={
                 // Attempt to recover by trying to re-render the segment
-                () => reset()
+                () => reload()
               }
             >
               Retry
