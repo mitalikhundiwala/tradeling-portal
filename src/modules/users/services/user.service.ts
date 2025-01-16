@@ -1,4 +1,4 @@
-import request from "@/lib/request";
+import request from "@/app/actions/request";
 import { IUser } from "@/modules/users/models/user.model";
 
 export interface IUserPage {

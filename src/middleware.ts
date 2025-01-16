@@ -1,17 +1,17 @@
 import { NextResponse, NextRequest } from "next/server";
 import { PUBLIC_ROUTES, LOGIN } from "@/lib/routes";
-import { auth } from "@/auth";
-
+import { cookies } from "next/headers";
+import { TL_AUTH_TOKEN } from "@/constant";
 import { i18nRouter } from "next-i18n-router";
 import i18nConfig from "./i18nConfig";
 
 export async function middleware(request: NextRequest) {
   const { nextUrl } = request;
-  const session = await auth();
+  const cookieStore = await cookies();
+  const isAuthenticated = !!cookieStore.get(TL_AUTH_TOKEN)?.value;
 
-  const isAuthenticated = !!session?.user;
   const isPublicRoute = !!PUBLIC_ROUTES.find((route) =>
-    nextUrl.pathname.startsWith(route)
+    nextUrl.pathname.startsWith(route),
   );
   const locale = i18nConfig.getLocale(request);
   if (

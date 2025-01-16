@@ -84,7 +84,7 @@ export default function OrdersTable(props: IProps) {
           acc[item.id] = item.value as string[];
           return acc;
         },
-        {} as Result
+        {} as Result,
       );
       const statuses = filters?.["orderStatus"];
       return OrdersService.retrieveOrders({
@@ -116,7 +116,7 @@ export default function OrdersTable(props: IProps) {
         acc[item.id] = item.value as string[];
         return acc;
       },
-      {} as Result
+      {} as Result,
     );
     if (!isEmpty(filters)) {
       if (filters["orderStatus"]?.length) {
@@ -138,7 +138,7 @@ export default function OrdersTable(props: IProps) {
 
   const tableData = useMemo(
     () => (isFetching ? Array(pagination.pageSize).fill({}) : data.orders),
-    [isFetching, data]
+    [isFetching, data],
   );
 
   const tableColumns = useMemo(
@@ -149,7 +149,7 @@ export default function OrdersTable(props: IProps) {
             cell: () => <Skeleton className="h-5 w-full bg-gray-300" />,
           }))
         : columns,
-    [isFetching]
+    [isFetching],
   );
 
   const table = useReactTable({

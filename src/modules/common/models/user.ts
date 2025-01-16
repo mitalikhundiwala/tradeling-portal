@@ -1,13 +1,10 @@
-import { AdapterUser } from "next-auth/adapters";
-import { JWT } from "next-auth/jwt";
-import { DefaultSession } from "next-auth";
-
 export interface IRole {
   id: number;
   name: string;
 }
 
-export interface ILoggedInUser extends AdapterUser {
+export interface ILoggedInUser {
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -17,14 +14,14 @@ export interface ILoggedInUser extends AdapterUser {
   permissions: string[];
 }
 
-export interface ISession extends DefaultSession {
+export interface ISession {
   accessToken?: string | null;
   refreshToken?: string | null;
   roles?: IRole[] | null;
   permissions?: string[] | null;
 }
 
-export interface IToken extends JWT {
+export interface IToken {
   accessToken?: string | null;
   refreshToken?: string | null;
   roles?: IRole[] | null;
