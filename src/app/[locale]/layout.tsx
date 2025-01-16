@@ -25,9 +25,11 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  modal,
   params,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
   params: { locale: string };
 }>) {
   const urlParams = await params;
@@ -40,7 +42,10 @@ export default async function RootLayout({
       >
         <AuthWrapper>
           <QueryProvider>
-            <DirectionProvider dir={direction}>{children}</DirectionProvider>
+            <DirectionProvider dir={direction}>
+              {children}
+              {modal}
+            </DirectionProvider>
           </QueryProvider>
         </AuthWrapper>
         <Toaster />

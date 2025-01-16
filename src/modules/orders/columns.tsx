@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { FormattedDate } from "../common/components/date/formatted-date";
 import { IOrder } from "./models/order";
+import Link from "next/link";
 
 export const columns: ColumnDef<IOrder>[] = [
   {
@@ -42,6 +43,13 @@ export const columns: ColumnDef<IOrder>[] = [
     header: () => <div className="rtl:text-right">Order Status</div>,
     meta: {
       filterKey: "orderStatus",
+    },
+  },
+  {
+    accessorKey: "viewOrder",
+    header: () => <div className="rtl:text-right">View</div>,
+    cell: ({ row }) => {
+      return <Link href={`/orders/order/${row.getValue("orderNo")}`}>View</Link>;
     },
   },
 ];

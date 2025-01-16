@@ -41,7 +41,6 @@ interface IQueryParams {
 
 export default function OrdersTable(props: IProps) {
   const { t } = useTranslation();
-  console.log(t("header"));
 
   const response = use(props.ordersReponse);
 
