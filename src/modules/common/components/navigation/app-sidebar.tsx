@@ -67,11 +67,7 @@ export function AppSidebar({
     ],
   };
   return (
-    <Sidebar
-      {...props}
-      side={props.locale === "ar" ? "right" : "left"}
-      collapsible="icon"
-    >
+    <Sidebar {...props} side={props.locale === "ar" ? "right" : "left"}>
       <SidebarHeader className="flex-col h-16 shrink-0 items-center  px-4">
         <Link href="/">
           <span className="grow inline-block align-middle">
@@ -85,14 +81,14 @@ export function AppSidebar({
           </span>
         </Link>
       </SidebarHeader>
-      <SidebarContent className="mt-10">
+      <SidebarContent className="mt-10 w-[90%]">
         {data.navMain.map((item) => {
           return (
             <Collapsible className="group/collapsible" key={item.title}>
               <SidebarGroup className="p-0">
                 <SidebarGroupLabel className="text-sm font-bold">
-                  <CollapsibleTrigger className="flex [&[data-state=open]>div>div>svg]:rotate-180 mb-1">
-                    <div className="flex w-full ali">
+                  <CollapsibleTrigger className="flex [&[data-state=open]>div>div>svg]:rotate-180 mb-1 w-full">
+                    <div className="flex w-full justify-between">
                       <span className="mr-4">{item.icon}</span>
                       <p className="flex items-center">{item.title}</p>
                       <div
