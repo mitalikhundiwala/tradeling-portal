@@ -51,8 +51,8 @@ export const CreateRoleModal: FunctionComponent<IProps> = ({
   const form = useForm<newRoleSchemaTypes>({
     resolver: zodResolver(newRoleSchema),
     defaultValues: {
-      name: undefined,
-      permissions: undefined,
+      name: '',
+      permissions: [],
     },
   });
 
@@ -124,15 +124,15 @@ export const CreateRoleModal: FunctionComponent<IProps> = ({
                                 <Checkbox
                                   checked={field.value?.includes(item.value)}
                                   onCheckedChange={(checked) => {
-                                    return checked
+                                    return checked && field.value
                                       ? field.onChange([
                                           ...field.value,
                                           item.value,
                                         ])
                                       : field.onChange(
                                           field.value?.filter(
-                                            (value) => value !== item.value,
-                                          ),
+                                            (value) => value !== item.value
+                                          )
                                         );
                                   }}
                                 />
