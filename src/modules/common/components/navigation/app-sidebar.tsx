@@ -27,6 +27,7 @@ import Link from "next/link";
 
 import logo from "@/assets/logo.svg";
 import { useTranslation } from "react-i18next";
+import classNames from "classnames";
 
 type Props = {
   locale: string;
@@ -88,7 +89,7 @@ export function AppSidebar({
               <SidebarGroup className="p-0">
                 <SidebarGroupLabel className="text-sm font-bold">
                   <CollapsibleTrigger className="flex [&[data-state=open]>div>div>svg]:rotate-180 mb-1 w-full">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       <span className="mr-4">{item.icon}</span>
                       <p className="flex items-center">{item.title}</p>
                       <div
@@ -110,12 +111,17 @@ export function AppSidebar({
                 </SidebarGroupLabel>
                 <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
                   <SidebarGroupContent className="pl-2">
-                    <SidebarMenu>
+                    <SidebarMenu className="ml-4 border-l border-gray-600 pl-2">
                       {item.items.map((item) => {
                         const isActive = pathname === item.url;
                         return (
                           <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton asChild isActive={isActive}>
+                            <SidebarMenuButton
+                              asChild
+                              className={classNames({
+                                "font-bold": isActive,
+                              })}
+                            >
                               <Link href={`${item.url}`}>
                                 <span>{item.title}</span>
                               </Link>
