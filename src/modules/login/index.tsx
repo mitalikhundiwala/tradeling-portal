@@ -59,7 +59,7 @@ export default function LoginForm() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="w-full max-w-md bg-gray-800">
         <CardHeader>
-          <CardTitle className="flex justify-center">
+          <CardTitle className="flex">
             <Image
               src={logo.src}
               alt="Icon"
