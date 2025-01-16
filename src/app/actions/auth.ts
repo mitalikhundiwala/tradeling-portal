@@ -53,7 +53,7 @@ export const logout = async () => {
   });
   cookie.set(TL_REFRESH_TOKEN, "", {
     path: "/",
-    maxAge: COOKIE_EXPIRY_TIME,
+    maxAge: -1,
     httpOnly: true,
   });
   redirect("/login");
