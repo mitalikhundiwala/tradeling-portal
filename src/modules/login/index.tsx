@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { login } from "@/app/actions/auth";
 import Image from "next/image";
 import logo from "@/assets/logo.svg";
+import classnames from "classnames";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -69,55 +70,59 @@ export default function LoginForm() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Username Field */}
-            <div>
-              <Label htmlFor="username" className="text-white font-bold">
-                Username
-              </Label>
-              <Input
-                id="username"
-                {...register("username")}
-                placeholder="Enter your username"
-                className={errors.username ? "border-red-500" : ""}
-              />
-              {errors.username && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.username.message}
-                </p>
-              )}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="username" className="text-white font-bold">
+                  Username
+                </Label>
+                <Input
+                  id="username"
+                  {...register("username")}
+                  placeholder="Enter your username"
+                  className={classnames("bg-white", {
+                    "border-red-500": errors.username,
+                  })}
+                />
+                {errors.username && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.username.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="password" className="text-white font-bold">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  {...register("password")}
+                  placeholder="Enter your password"
+                  className={classnames("bg-white", {
+                    "border-red-500": errors.password,
+                  })}
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
             </div>
-
-            {/* Password Field */}
-            <div>
-              <Label htmlFor="password" className="text-white font-bold">
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                {...register("password")}
-                placeholder="Enter your password"
-                className={errors.password ? "border-red-500" : ""}
-              />
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-
             {/* Submit Button */}
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="animate-spin" />
-                  Logging in...
-                </>
-              ) : (
-                "Login"
-              )}
-            </Button>
+            <div className="mt-8">
+              <Button type="submit" className="w-full " disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="animate-spin" />
+                    Logging in...
+                  </>
+                ) : (
+                  "Login"
+                )}
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>
