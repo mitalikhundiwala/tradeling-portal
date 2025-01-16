@@ -1,48 +1,49 @@
 "use client";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { i18n, Locale } from "i18n.config";
-import { Globe } from "lucide-react";
-import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import i18nConfig from "@/i18nConfig";
+import { usePathname, useRouter } from "next/navigation";
 
-export default function LocaleSwitcher() {
-  const pathname = usePathname();
-  const params = useParams();
+type Props = {
+  locale: string;
+};
 
-  const redirectedPathname = (locale: Locale) => {
-    if (!pathname) return "/";
-    const segments = pathname.split("/");
-    segments[1] = locale;
-    return segments.join("/");
+export default function LocaleSwitcher(props: Props) {
+  const router = useRouter();
+  const currentPathname = usePathname();
+  const { locale: currentLocale } = props;
+
+  const handleClick = (newLocale: string) => {
+    // set cookie for next-i18n-router
+    const days = 30;
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    const expires = date.toUTCString();
+    document.cookie = `NEXT_LOCALE=${newLocale};expires=${expires};path=/`;
+    // redirect to the new locale path
+    if (
+      currentLocale === i18nConfig.defaultLocale &&
+      !i18nConfig.prefixDefault
+    ) {
+      router.push("/" + newLocale + currentPathname);
+    } else {
+      router.push(
+        currentPathname.replace(`/${currentLocale}`, `/${newLocale}`),
+      );
+    }
+    router.refresh();
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <div className="flex items-center">
-          <Globe size="20" />
-          <span className="pl-2">
-            {params.lang === "en" ? "English" : "Arabic"}
-          </span>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {i18n.locales.map((locale) => {
-          return (
-            <DropdownMenuItem key={locale}>
-              <Link href={redirectedPathname(locale)}>
-                {locale === "en" ? "English" : "Arabic"}
-              </Link>
-            </DropdownMenuItem>
-          );
-        })}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center">
+      <Button
+        variant="link"
+        onClick={() => {
+          handleClick(currentLocale === "en" ? "ar" : "en");
+        }}
+      >
+        {currentLocale === "en" ? "العربية" : "English"}
+      </Button>
+    </div>
   );
 }

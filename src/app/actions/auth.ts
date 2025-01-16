@@ -7,6 +7,7 @@ import {
   TL_REFRESH_TOKEN,
   COOKIE_EXPIRY_TIME,
 } from "@/constant";
+import { redirect } from "next/navigation";
 
 export interface IAuthRequestParams {
   email: string;
@@ -41,4 +42,19 @@ export const login = async (data: IAuthRequestParams) => {
     secure: process.env.NODE_ENV === "production",
   });
   return res;
+};
+
+export const logout = async () => {
+  const cookie = await cookies();
+  cookie.set(TL_AUTH_TOKEN, "", {
+    path: "/",
+    maxAge: -1,
+    httpOnly: true,
+  });
+  cookie.set(TL_REFRESH_TOKEN, "", {
+    path: "/",
+    maxAge: COOKIE_EXPIRY_TIME,
+    httpOnly: true,
+  });
+  redirect("/login");
 };

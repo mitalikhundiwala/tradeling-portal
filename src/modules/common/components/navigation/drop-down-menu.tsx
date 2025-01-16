@@ -10,23 +10,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { CircleUserRound, LogOut } from "lucide-react";
-
-import { Button } from "../../../../components/ui/button";
+import { Button } from "@/components/ui/button";
+import { logout } from "@/app/actions/auth";
 
 export default function DropdownMenuComponent() {
   const { data: session } = {} as any;
 
   function logoutHandler() {
-    //logout();
+    logout();
   }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div className="flex items-center">
           {session?.user?.firstName} {session?.user?.lastName}
-          <div className="pl-2">
+          <div className="ltr:pl-2 rtl:pr-2">
             <CircleUserRound />
           </div>
         </div>

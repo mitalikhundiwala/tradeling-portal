@@ -20,6 +20,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { getInitials } from "../../models/user";
+import { logout } from "@/app/actions/auth";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -27,7 +28,7 @@ export function NavUser() {
   const { data: session } = {} as any;
 
   function logoutHandler() {
-    // logout();
+    logout();
   }
 
   if (!session?.user) {

@@ -3,16 +3,16 @@ import localFont from "next/font/local";
 import { AuthWrapper } from "@/modules/common/authorization/AuthWrapper";
 import QueryProvider from "@/providers/QueryProvider";
 import { Toaster } from "@/components/ui/toaster";
-
-import "./globals.css";
+import "../globals.css";
+import DirectionProvider from "@/providers/DirectionProvider";
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "../fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: "../fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
@@ -23,18 +23,25 @@ export const metadata: Metadata = {
     "Tradeling, the largest B2B digital marketplace in the MENA region",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
+  const urlParams = await params;
+  const locale = urlParams.locale;
+  const direction = locale === "ar" ? "rtl" : "ltr";
   return (
-    <html lang="en">
+    <html lang={locale} dir={direction}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
       >
         <AuthWrapper>
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <DirectionProvider dir={direction}>{children}</DirectionProvider>
+          </QueryProvider>
         </AuthWrapper>
         <Toaster />
       </body>
