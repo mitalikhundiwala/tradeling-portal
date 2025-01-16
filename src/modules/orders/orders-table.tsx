@@ -20,7 +20,6 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { isEmpty, reduce } from "lodash";
 import useUpdateSearchParams from "@/hooks/use-search-params";
-import { useTranslation } from "react-i18next";
 
 interface IProps {
   ordersReponse: Promise<IOrdersPage>;
@@ -40,8 +39,6 @@ interface IQueryParams {
 }
 
 export default function OrdersTable(props: IProps) {
-  const { t } = useTranslation();
-  console.log(t("header"));
 
   const response = use(props.ordersReponse);
 
