@@ -12,6 +12,8 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { login } from "@/app/actions/auth";
+import Image from "next/image";
+import logo from "@/assets/logo.svg";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -54,15 +56,25 @@ export default function LoginForm() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-center">Login</CardTitle>
+          <CardTitle className="flex justify-center">
+            <Image
+              src={logo.src}
+              alt="Icon"
+              width="200"
+              height="200"
+              priority={true}
+            />
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Username Field */}
             <div>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username" className="text-white font-bold">
+                Username
+              </Label>
               <Input
                 id="username"
                 {...register("username")}
@@ -78,7 +90,9 @@ export default function LoginForm() {
 
             {/* Password Field */}
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-white font-bold">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
