@@ -97,7 +97,7 @@ export function AppSidebar({
               <SidebarGroup className="p-0 border-b border-b-gray-700 text-md">
                 <SidebarGroupLabel
                   className={classNames("text-sm font-bold h-10 pt-0", {
-                    "bg-white rounded-none text-black": isGroupActive, // Add active class
+                    "bg-orange-700 rounded-none text-white": isGroupActive, // Add active class
                   })}
                 >
                   <CollapsibleTrigger className="flex [&[data-state=open]>div>div>svg]:rotate-180 mb-1 w-full">
